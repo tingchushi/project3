@@ -30,29 +30,48 @@ app.get("/api/seed", async (req, res) => {
 });
 
 app.post("/api/login",async (req,res)=>{
-  const { username, password } = req.body;  
+  const { username, password, email } = req.body;  
   const hashedString = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+  // console.log(req.body);
+  // console.log(req.body.username)
+  // console.log(User.find(req.body.username))
+  const findUser =  await User.find({}, {username})
+  findUser.forEach ((e) => { 
+    const comp = e.username
+    // console.log(comp)
+  })
   
+  // console.log(findUser);
+  // console.log(compareUser)
+
   try {
-      const newUser = await User.create(
-        {
-          username: username,
-          password: hashedString
-        }
-      )
-      bcrypt.compareSync(password, hashedString); 
-      res.json(newUser);
+      if (findUser !== comp){
+        const newUser = await User.create(
+          {
+            username: username,
+            email: email,
+            password: hashedString,
+          },
+        )
+        bcrypt.compareSync(password, hashedString); 
+        res.json(newUser);
+      } else {
+        res.json("duplicated")
+      }
+      // findUser = null;
+      // console.log(findUser)
     }
 catch(error){
   console.log(error)
 };
 })
 
-app.get("/api/login/authen", async (req, res) => {
+app.get("/api/login/authentication", async (req, res) => {
   try {
     const foundUser = await User.find({
       username: req.body.username,
       password: req.body.password,
+      email: req.body.email
     });
     res.send(foundUser);
   } catch (error) {
