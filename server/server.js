@@ -15,30 +15,19 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get("/user/seed", async (req, res) => {
+app.get("/api/seed", async (req, res) => {
   try {
-    const newFruits = await User.create(
+    const seed = await User.create(
         {
-          username: "grapefruit",
-          password: "pink",
+          username: "admin",
+          password: "pass",
         }
       );
-      res.json(newFruits);
+      res.json(seed);
     } catch (error) {
     console.log(error);
   };
 });
-
-app.get("/user/:id", async (req, res) => {
-  try {
-    const foundUser = await User.findBId(req.params.id);
-    res.send(foundUser);
-  } catch (error) {
-    console.log(error);
-  };
-});
-
-
 
 app.post("/api/login",async (req,res)=>{
   const { username, password } = req.body;  
@@ -58,7 +47,18 @@ catch(error){
   console.log(error)
 };
 })
-  
+
+app.get("/api/login/authen", async (req, res) => {
+  try {
+    const foundUser = await User.find({
+      username: req.body.username,
+      password: req.body.password,
+    });
+    res.send(foundUser);
+  } catch (error) {
+    console.log(error);
+  };
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
