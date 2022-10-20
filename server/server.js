@@ -86,7 +86,8 @@ try {
   const loginPass = bcrypt.compareSync(password, user.password);
   if (loginPass) {
     // res.status(200).json({ msg: "Login ok" });
-    res.redirect("/")
+    const id = User._id;
+    res.redirect(`/api/login/${user._id}`)
   } else {
     res.status(401).json({ msg: "Not ok" });
   }
@@ -94,6 +95,21 @@ try {
   res.status(500).json({ msg: "Server Error" });
 }
 });
+
+
+app.get("/api/login/:id", async (req,res)=>{
+  const id = req.params.id;
+  const user = await User.find({_id: id});
+  res.send(user[0]._id);
+  // const details = await User.findOne({ _id : id });
+  // if (details){
+  //   res.send({details})
+  // }else {
+  //   res.send("error")
+  // }
+})
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
