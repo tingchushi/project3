@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt');
 const mongoose = require("mongoose");
 const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI)
-const User = require("./models/Users.js")
+const User = require("./models/Users.js");
+const { mapReduce } = require("./models/Users.js");
 
 const app = express()
 const port = process.env.PORT ?? 3000
@@ -32,20 +33,31 @@ app.get("/api/seed", async (req, res) => {
 app.post("/api/login",async (req,res)=>{
   const { username, password, email } = req.body;  
   const hashedString = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-  // console.log(req.body);
-  // console.log(req.body.username)
-  // console.log(User.find(req.body.username))
-  const findUser =  await User.find({}, {username})
-  findUser.forEach ((e) => { 
-    const comp = e.username
-    // console.log(comp)
-  })
-  
-  // console.log(findUser);
-  // console.log(compareUser)
+  const findUser =  await User.findOne({username})
+  const findEmail = await User.findOne({email})
+  const emailToValidate = email;
+  const emailRegexp = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
+console.log(emailRegexp.test(emailToValidate));
   try {
-      if (findUser !== comp){
+    
+    if(username === null || username.match(/^ *$/) !== null || password === null || password.match(/^ *$/) !== null){
+      return res.send("invalid username/password");
+    }
+
+    if(!emailRegexp.test(emailToValidate)){
+      return res.send("invalid Email");
+    }
+
+    if (findUser){
+      return res.send("username existed");
+    }
+
+    if (findEmail){
+      return res.send("email existed");
+    }
+
+
         const newUser = await User.create(
           {
             username: username,
@@ -53,30 +65,34 @@ app.post("/api/login",async (req,res)=>{
             password: hashedString,
           },
         )
-        bcrypt.compareSync(password, hashedString); 
         res.json(newUser);
-      } else {
-        res.json("duplicated")
-      }
-      // findUser = null;
-      // console.log(findUser)
     }
 catch(error){
   console.log(error)
 };
-})
+}) 
 
 app.get("/api/login/authentication", async (req, res) => {
-  try {
-    const foundUser = await User.find({
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email
-    });
-    res.send(foundUser);
-  } catch (error) {
-    console.log(error);
-  };
+
+  const { username, password } = req.body;
+  console.log(req.body);
+try {
+  const user = await User.findOne({ username });
+  if (user === null) {
+    res.status(401).json({ msg: "No user" });
+    return;
+  }
+
+  const loginPass = bcrypt.compareSync(password, user.password);
+  if (loginPass) {
+    // res.status(200).json({ msg: "Login ok" });
+    res.redirect("/")
+  } else {
+    res.status(401).json({ msg: "Not ok" });
+  }
+} catch (error) {
+  res.status(500).json({ msg: "Server Error" });
+}
 });
 
 app.listen(port, () => {
