@@ -10,8 +10,8 @@ function Navbar1() {
         <Container>
           <Navbar.Brand href="/">Home</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="/analysis">Analysis</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link href="/signup">Signup</Nav.Link>
+            <Nav.Link href="/logout">Logout</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

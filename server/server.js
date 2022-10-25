@@ -7,6 +7,7 @@ const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI)
 const User = require("./models/Users.js");
 const Item = require("./models/Items.js");
+const cors = require('cors')
 
 const app = express()
 const port = process.env.PORT ?? 3000
@@ -17,7 +18,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: { secure: true }
-}))
+}));
+app.use(cors());
 
 
 app.get('/', (req, res) => {

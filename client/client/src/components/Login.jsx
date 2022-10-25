@@ -1,5 +1,5 @@
 
-import React from 'react';
+import { React , useEffect, useState } from 'react';
 import {
   MDBBtn,
   MDBContainer,
@@ -13,10 +13,48 @@ import {
 }
 from 'mdb-react-ui-kit';
 
+
+
+
 function Login (props) {
+  const [show, setShow] = useState([]);
+  const [login, setLogin] = useState([]);
+
+  const options = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  
+  fetch('http://localhost:3000/api/all', options)
+    .then(response => response.json())
+    .then((data) => {
+    
+      setShow(data?.username)
+      console.log(data)
+   
+  },[])
+
+  const signup = {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  
+  fetch('http://localhost:3000/api/signup', signup)
+    .then(response => response.json())
+    .then((data) => {
+    
+      setSign(data)
+      console.log(data)
+   
+  },[])
+
   return (
 <MDBContainer className="my-5">
-
+{login}
 <MDBCard>
   <MDBRow className='g-0'>
 
