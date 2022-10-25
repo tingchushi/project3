@@ -2,20 +2,41 @@ require("dotenv").config();
 const express = require('express');
 const bcrypt = require('bcrypt');
 const mongoose = require("mongoose");
+const session = require("express-session");
 const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI)
 const User = require("./models/Users.js");
-const { mapReduce } = require("./models/Users.js");
+const Item = require("./models/Items.js");
 
 const app = express()
 const port = process.env.PORT ?? 3000
 
 app.use(express.json());
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+app.get('/api/admin', (req, res) => {
+  res.send('Admin!');
+})
+
+app.get('/api/supervisor', (req, res) => {
+  res.send('Supervisor!');
+})
+
+app.get('/api/user', (req, res) => {
+  res.send('User!');
+})
+
+//seed
 app.get("/api/seed", async (req, res) => {
   try {
     const seed = await User.create(
@@ -30,7 +51,14 @@ app.get("/api/seed", async (req, res) => {
   };
 });
 
-app.post("/api/login",async (req,res)=>{
+//view all user
+app.get('/api/all', async (req,res)=>{
+  const all = await User.find({});
+  res.send(all)
+})
+
+//signup
+app.post("/api/signup",async (req,res)=>{
   const { username, password, email } = req.body;  
   const hashedString = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   const findUser =  await User.findOne({username})
@@ -57,7 +85,6 @@ console.log(emailRegexp.test(emailToValidate));
       return res.send("email existed");
     }
 
-
         const newUser = await User.create(
           {
             username: username,
@@ -72,10 +99,11 @@ catch(error){
 };
 }) 
 
-app.get("/api/login/authentication", async (req, res) => {
+//login auth
+app.get("/api/login", async (req, res) => { 
 
   const { username, password } = req.body;
-  console.log(req.body);
+ 
 try {
   const user = await User.findOne({ username });
   if (user === null) {
@@ -85,9 +113,17 @@ try {
 
   const loginPass = bcrypt.compareSync(password, user.password);
   if (loginPass) {
-    // res.status(200).json({ msg: "Login ok" });
-    const id = User._id;
-    res.redirect(`/api/login/${user._id}`)
+    req.session.userid = user._id;
+    const details = await User.find({username: username});
+    const findRole = details[0].role;
+    // console.log(findRole)
+    // const findRole = details.role;
+    // console.log(findRole)
+    if(findRole === "admin"){
+     return res.redirect("/api/admin")
+    }
+
+    res.redirect("/");
   } else {
     res.status(401).json({ msg: "Not ok" });
   }
@@ -96,20 +132,79 @@ try {
 }
 });
 
+//update for admin and supervisor
+app.put("/api/edit/:id", (req, res) => {
+  const { role } = req.body;
+  if (req.body.role === "admin" || req.body.role === "supervisor" || req.body.role === "user"){
 
-app.get("/api/login/:id", async (req,res)=>{
-  const id = req.params.id;
-  const user = await User.find({_id: id});
-  res.send(user[0]._id);
-  // const details = await User.findOne({ _id : id });
-  // if (details){
-  //   res.send({details})
-  // }else {
-  //   res.send("error")
-  // }
+    User.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true },
+      (err, updatedUser) => {
+        if (err) {
+          res.status(400).json({ error: err.message });
+        }
+        res.status(200).json(updatedUser);
+      })
+      return;
+    }else {
+      return res.status(400).json({msg:"wrong input"})
+    }
+});
+
+//delete user
+app.delete("/api/delete/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleteUser = await User.findByIdAndDelete(id);
+
+    if (deleteUser === null) {
+      res.status(400).json({ msg: "Wrong ID" });
+    } else {
+      res.status(200).json(deleteUser);
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
+});
+
+//logout user and destroy session
+app.post('/logout', (req, res) => {
+  // req.logout();
+  req.session.destroy((err) => {
+    res.clearCookie('connect.sid');
+    res.send('Logged out');
+  });
+});
+
+
+app.get("/api/additem", async (req, res) => {
+  const { name, description, price } = req.body;  
+  try {
+    const newUser = await Item.create(
+      {
+        name: name,
+        description: description,
+        price: price,
+      }
+    )
+    res.json(newUser);
+}
+catch(error){
+console.log(error)
+}});
+
+app.get(("/api/item"), async(req,res)=>{
+  const showAll = await Item.find({});
+  res.status(200).json(showAll)
 })
 
-
+mongoose.connection.on('connecting', () => { 
+  console.log('connecting')
+  console.log(mongoose.connection.readyState); //logs 2
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
