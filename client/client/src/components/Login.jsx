@@ -75,7 +75,7 @@ function Login (props) {
         <h5 className="fw-normal my-4 pb-3" style={{letterSpacing: '1px'}}>Sign into your account</h5>
 
           <MDBInput wrapperClass='mb-4' label='Email address' id='formControlLg' type='email' size="lg"/>
-          <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg"/>
+          <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg" name="username"/>
 
         <MDBBtn className="mb-4 px-5" color='dark' size='lg'></MDBBtn>
         <a className="small text-muted" href="#!">Forgot password?</a>
