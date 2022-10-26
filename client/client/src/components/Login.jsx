@@ -12,14 +12,14 @@ import {
   MDBInput
 }
 from 'mdb-react-ui-kit';
-
-
+import Signup from './Signup';
 
 
 function Login (props) {
   const [show, setShow] = useState([]);
   const [login, setLogin] = useState([]);
 
+  useEffect(()=>{
   const options = {
     method: 'GET',
     headers: {
@@ -35,22 +35,24 @@ function Login (props) {
       console.log(data)
    
   },[])
-
-  const signup = {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
   
-  fetch('http://localhost:3000/api/signup', signup)
-    .then(response => response.json())
-    .then((data) => {
+})
+
+  // const signup = {
+  //   method: 'POST',
+  //   headers: {
+  //     "Content-Type": "application/json"
+  //   }
+  // };
+  
+  // fetch('http://localhost:3000/api/signup', signup)
+  //   .then(response => response.json())
+  //   .then((data) => {
     
-      setSign(data)
-      console.log(data)
+  //     setSign(data)
+  //     console.log(data)
    
-  },[])
+  // },[])
 
   return (
 <MDBContainer className="my-5">
@@ -75,9 +77,9 @@ function Login (props) {
           <MDBInput wrapperClass='mb-4' label='Email address' id='formControlLg' type='email' size="lg"/>
           <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg"/>
 
-        <MDBBtn className="mb-4 px-5" color='dark' size='lg'>Login</MDBBtn>
+        <MDBBtn className="mb-4 px-5" color='dark' size='lg'></MDBBtn>
         <a className="small text-muted" href="#!">Forgot password?</a>
-        <p className="mb-5 pb-lg-2" style={{color: '#393f81'}}>Don't have an account? <a href="#!" style={{color: '#393f81'}}>Register here</a></p>
+        <p className="mb-5 pb-lg-2" style={{color: '#393f81'}}>Don't have an account? <a href="/signup" style={{color: '#393f81'}}>Register Here</a></p>
 
         <div className='d-flex flex-row justify-content-start'>
           <a href="#!" className="small text-muted me-1">Terms of use.</a>
