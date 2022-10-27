@@ -80,7 +80,7 @@ console.log(emailRegexp.test(emailToValidate));
     }
 
     if (findUser){
-      return res.send("username existed");
+      res.status(204).json({ message: "Something went wrong" });
     }
 
     if (findEmail){
@@ -102,7 +102,7 @@ catch(error){
 }) 
 
 //login auth
-app.get("/api/login", async (req, res) => { 
+app.post("/api/login", async (req, res) => { 
 
   const { username, password } = req.body;
  
@@ -110,6 +110,7 @@ try {
   const user = await User.findOne({ username });
   if (user === null) {
     res.status(401).json({ msg: "No user" });
+    console.log(user);
     return;
   }
 
@@ -122,9 +123,14 @@ try {
     // const findRole = details.role;
     // console.log(findRole)
     if(findRole === "admin"){
-     return res.redirect("/api/admin")
+     return res.status(200).json({msg: "admin"})
     }
-
+    if(findRole === "supervisor"){
+      return res.status(200).json({msg: "admin"})
+     }
+     if(findRole === "user"){
+      return res.status(200).json({msg: "admin"})
+     }
     res.redirect("/");
   } else {
     res.status(401).json({ msg: "Not ok" });

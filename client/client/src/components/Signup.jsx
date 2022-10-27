@@ -17,21 +17,21 @@ from 'mdb-react-ui-kit';
 
 function Signup () {
 
-    // const [message, setMessage] = useState("blank");
-    const [countries, setCountries] = useState([]);
     const [passMatch, setPassMatch] = useState(true);
     const [state, setState] = useState({
-      email: "",
       password: "",
       cPassword: ""
     });
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [msg, setMsg] = useState(' ')
+    const [passVal, setPassVal] = useState(' ')
     const navigate = useNavigate();
     
     useEffect(() => {
       validatePassword();
     }, [state]);
-
-    const activate = true;
 
     const handleChange = (e) => {
       const { id, value } = e.target;
@@ -39,26 +39,62 @@ function Signup () {
         ...prevState,
         [id]: value
       }));
-    };
 
+      function checkPasswordValidation(value) {
+        const isWhitespace = /^(?=.*\s)/;
+        if (isWhitespace.test(value)) {
+          return "Password must not contain Whitespaces.";
+        }
+    
+    
+        const isContainsUppercase = /^(?=.*[A-Z])/;
+        if (!isContainsUppercase.test(value)) {
+          return "Password must have at least one Uppercase Character.";
+        }
+    
+    
+        const isContainsLowercase = /^(?=.*[a-z])/;
+        if (!isContainsLowercase.test(value)) {
+          return "Password must have at least one Lowercase Character.";
+        }
+    
+    
+        const isContainsNumber = /^(?=.*[0-9])/;
+        if (!isContainsNumber.test(value)) {
+          return "Password must contain at least one Digit.";
+        }
+    
+    
+        const isContainsSymbol =
+          /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹])/;
+        if (!isContainsSymbol.test(value)) {
+          return "Password must contain at least one Special Symbol.";
+        }
+    
+    
+        const isValidLength = /^.{8,16}$/;
+        if (!isValidLength.test(value)) {
+          return "Password must be 10-16 Characters Long.";
+        }
+      }
+      console.log(state.password)
+      setPassVal(checkPasswordValidation(state.password));
+    };
+    
     const validatePassword = () => {
-      state.password === state.cPassword
-        ? setPassMatch(true)
-        : setPassMatch(false);
+      if(state.password === state.cPassword){
+        setPassMatch(true)
+      }else{
+        setPassMatch(false);
+      } 
     };
 
-    const createAccount = () =>{
-      console.log("createAccount");
-      validatePassword();
-      
-    }
-  
     const handleSubmit = (event) => {
       event.preventDefault();
   
       const data = Object.fromEntries(new FormData(event.target));
       console.log(data)
-  
+
       fetch("http://localhost:3000/api/signup", {
         method: "post",
         headers: {
@@ -66,20 +102,46 @@ function Signup () {
         },
         body: JSON.stringify(data),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Bad status code from server.');
+          } 
+          if (response.status !== 200){
+            setMsg('Username/Email Existed')
+            alert("Invalid Information")
+          }
+          console.log(response.status)
+          return response.json();
+        })
+      
         .then((data) => {
           if (data.msg) {
             setMessage(data.msg);
+            
           } else {
-            navigate("/holidays");
+            navigate("/");
+            alert("Welcome!!! You have sucessfully registered!")
           }
         });
     };
+
+    function SubmitButton(){
+      if (username && email && state.cPassword && state.password){
+        if(state.cPassword === state.password){
+          return <MDBBtn className="mb-4 px-5" color='dark' size='lg'>Register</MDBBtn>
+        }else{
+          return <MDBBtn type="button" disabled className="mb-4 px-5" color='dark' size='lg'>Register</MDBBtn>
+        }
+      } else {
+        return <MDBBtn type="button" disabled className="mb-4 px-5" color='dark' size='lg'>Register</MDBBtn>
+      };
+    };
+
     return (
       <form method="post" onSubmit={handleSubmit}>
         <fieldset>
           <br />
-          <legend>Sign Up</legend>
+          {/* <legend>Sign Up</legend> */}
           <MDBContainer fluid>
           <MDBCard className='text-black m-5' style={{borderRadius: '25px'}}>
           <MDBCardBody>
@@ -92,14 +154,14 @@ function Signup () {
             Username
           <div className="d-flex flex-row align-items-center mb-4 ">
                	<MDBIcon fas icon="user me-3" size='lg'/>
-                <MDBInput name='username' id='form1' type='text' className='w-100'/>
+                 <MDBInput name='username' id='username' type='text' value={username} onChange={ e => setUsername(e.target.value)}/>
               </div>
           </label>
           <label>
           Email
           <div className="d-flex flex-row align-items-center mb-4">
                 <MDBIcon fas icon="envelope me-3" size='lg'/>
-                <MDBInput name='email' id='email' type='email' value={state.email} onChange={handleChange}/>
+                <MDBInput name='email' id='email' type='email' value={email} onChange={ e => setEmail(e.target.value)}/>
               </div>
           </label>
           <label>
@@ -109,28 +171,29 @@ function Signup () {
                 <MDBInput name='password' id='password' type='password' value={state.password} onChange={handleChange}/>
               </div>
           </label>
- 
           <label>
           Repeat Password
           <div className="d-flex flex-row align-items-center mb-4">
                 <MDBIcon fas icon="key me-3" size='lg'/>
                 <MDBInput  id='cPassword' type='password' value={state.cPassword} onChange={handleChange}/>
               </div>
+          </label>
            <div className="input-error">
               {state.password !== state.cPassword ? "" : ""}
               </div>
-              <div className="input-error">
+              <div className="input-error" style={{color:"red"}}>
               {passMatch ? "" : "Error: Passwords do not match"}
+              <br/>
+             {passVal}
             </div>
-          </label>
           <br />
-          <MDBBtn disabled={activate} className="mb-4 px-5" color='dark' size='lg'>Register</MDBBtn>
+          <div style={{color:'red'}}>{msg}</div>
+          <SubmitButton className="mb-4 px-5" color='dark' size='lg'/>
           </MDBCol>
 
             <MDBCol md='10' lg='6' className='order-1 order-lg-2 d-flex align-items-center'>
               <MDBCardImage src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp' fluid/>
             </MDBCol>
-            
           </MDBRow>
         </MDBCardBody>
       </MDBCard>
@@ -142,11 +205,8 @@ function Signup () {
         href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
         rel="stylesheet"
         />
-
     </MDBContainer>
         </fieldset>
-        {/* <p>{message}</p> */}
-        
       </form>
     );
   }

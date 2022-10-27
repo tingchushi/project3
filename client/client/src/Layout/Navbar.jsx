@@ -6,16 +6,31 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 function Navbar1() {
   return (
     <>
-      <Navbar bg="dark" variant="dark" className='header'>
-        <Container>
-          <Navbar.Brand href="/">Home</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="/signup">Signup</Nav.Link>
-            <Nav.Link href="/logout">Logout</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
-      <Navbar bg="dark" variant="dark" className='footer'/>
+      <nav className="navbar fixed-top navbar-expand-lg" style={{backgroundColor:"grey", font:"white"}}>
+    <div className="container">
+        <a className="navbar-brand" href="/"><img src="n-img/logo.png" className="img-responsive"/></a>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                    <a className="nav-link" aria-current="page" href="/">Home</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Chi Siamo</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Dove Siamo</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Contatti</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
     </>
   );
 }
