@@ -95,7 +95,7 @@ function Signup () {
       const data = Object.fromEntries(new FormData(event.target));
       console.log(data)
 
-      fetch("http://localhost:3000/api/signup", {
+      fetch("http://127.0.0.1:3000/api/signup", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
