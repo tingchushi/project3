@@ -56,7 +56,7 @@ app.get("/api/seed", async (req, res) => {
 //view all user
 app.get('/api/all', async (req,res)=>{
   const all = await User.find({});
-  res.send(all)
+  res.status(200).json({msg:all})
 })
 
 //signup
