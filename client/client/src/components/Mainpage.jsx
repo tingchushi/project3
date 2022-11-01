@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import AdminDashboard from './AdminDasboard';
 
 function Mainpage (){
-const [data, setData] = useState([])
-const [user, setUser] = useState([])
-
+  const [data, setData] = useState([])
+  const [user, setUser] = useState([])
+  const [authenticated, setauthenticated] = useState(null);
+  
     useEffect(()=>{
       fetch("http://localhost:3000/api/item", {
         method: "GET",
@@ -37,8 +39,16 @@ const [user, setUser] = useState([])
 
       console.log(data)
       console.log(user)
-      
-    
+  
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("authenticated");
+    if (loggedInUser) {
+      setauthenticated(loggedInUser);
+    }
+  }, []);
+  if (!authenticated) {
+    return <useNavigate replace to="/" />;
+  } else {
     return (
         <div>
             <h1>Item List</h1>  
@@ -92,31 +102,10 @@ const [user, setUser] = useState([])
           ))}
         </MDBTableBody>
       </MDBTable>
+      
         </div>
     )
+  }
 }
 
 export default Mainpage
-
-{/* // {data.name}
-//               {data.description}
-//               {data.price}
-//               {/* {data.expiryDate} */}
-{/* //               {data.createdAt}</div>)} */} 
-
-{/* <td>
-{data.map((data,i) => <div key={i}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{data._id}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>)} */}
-
-{/* </td>
-<td>
-{data.map((data,i) => <div key={i}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{data.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>)}
-</td>
-<td>
-{data.map((data,i) => <div key={i}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{data.description}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>)}
-</td>
-<td>
-{data.map((data,i) => <div key={i}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{data.price}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>)}
-</td>
-<td>
-{data.map((data,i) => <div key={i}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{data.createdAt}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>)}
-</td> */}

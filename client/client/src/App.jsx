@@ -5,6 +5,7 @@ import Login from "./components/Login"
 import Mainpage from "./components/Mainpage"
 import Layout from "./Layout/Layout"
 import Signup from "./components/Signup"
+import AdminDashboard from "./components/AdminDasboard"
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route index element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Mainpage />} />
+        <Route path="/welcome" element={<AdminDashboard />} />
       </Route>
      </Routes>
     </BrowserRouter>

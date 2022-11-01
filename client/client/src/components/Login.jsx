@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { React } from "react"
 import {
@@ -11,14 +11,14 @@ import {
   MDBCardImage,
   MDBInput,
   MDBIcon,
-  MDBCheckbox
 }
 from 'mdb-react-ui-kit';
 import { FcFactoryBreakdown } from 'react-icons/fc';
 
 function LoginForm() {
-    const [error, setError] = useState(" ");
-    const navigate = useNavigate();
+  const [error, setError] = useState(" ");
+  const navigate = useNavigate();
+  const [authenticated, setauthenticated] = useState(localStorage.getItem(localStorage.getItem("authenticated")|| false));
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -35,6 +35,8 @@ function LoginForm() {
 
         .then((response) => {
             if (response.ok) {
+              setauthenticated(true)
+              localStorage.setItem("authenticated", true);
               navigate("/dashboard");
             } else {
               setError("Invalid Username/Password");
@@ -71,9 +73,9 @@ function LoginForm() {
 
          {/* <h5 className="fw-normal my-4 pb-3" style={{letterSpacing: '1px'}}>Sign into your account</h5> */}
 
-           <MDBInput wrapperClass='mb-4' label='Username' id='formControlLg' type='text' size="lg" name='username'/>
-           <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg" name="password"/>
-
+           <MDBInput wrapperClass='mb-4' label='Username' id='formControlLg' type='text' size="lg" name='username' placeholder="Enter your username"/>
+           <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg" name="password"placeholder="Enter your password"/>
+          <div style={{color:"red"}}>{error}</div>
          <MDBBtn className="mb-4 px-5" color='dark' size='lg' >Login</MDBBtn>
          <a className="small text-muted" href="#!">Forgot password?</a>
          <p className="mb-5 pb-lg-2" style={{color: '#393f81'}}>Don't have an account? <a href="/signup" style={{color: '#393f81'}}>Register Here</a></p>

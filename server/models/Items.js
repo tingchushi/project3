@@ -4,7 +4,7 @@ const itemSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    // expiryDate: { type: Date},
+    expiryDate: { type: Date},
     createdAt: {type: Date, default: Date.now},
     updatedAt: {type: Date, default: Date.now}
 })
