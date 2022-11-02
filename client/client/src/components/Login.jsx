@@ -35,9 +35,7 @@ function LoginForm() {
 
         .then((response) => {
             if (response.ok) {
-              setauthenticated(true)
-              localStorage.setItem("authenticated", true);
-              navigate("/dashboard");
+              navigate("/welcome");
             } else {
               setError("Invalid Username/Password");
             }
@@ -45,6 +43,7 @@ function LoginForm() {
           })
           .then((data) => {
             console.log(data);
+            localStorage.setItem('token', JSON.stringify(data));
           });
     };
     

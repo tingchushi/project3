@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
-import AdminDashboard from './AdminDasboard';
+import AdminDashboard from './Dashboard';
+
+
 
 function Mainpage (){
   const [data, setData] = useState([])
@@ -36,7 +38,6 @@ function Mainpage (){
       });
     },[])
 
-
       console.log(data)
       console.log(user)
   
@@ -50,10 +51,10 @@ function Mainpage (){
     return <useNavigate replace to="/" />;
   } else {
     return (
-        <div>
-            <h1>Item List</h1>  
+      
+<div style={{display:"flex", justifyContent:"center"}} >
 
-    <MDBTable className="table" align='middle'>
+    <MDBTable className="table" align='middle' style={{border:'inset'}}>
         <MDBTableHead>
           <tr>
           <th scope='col'>id</th>
@@ -64,6 +65,7 @@ function Mainpage (){
           <th scope='col'>Action</th>
           </tr>
         </MDBTableHead>
+    
         <MDBTableBody>
           {data.map((data) => (
             <tr key={data._id}>
@@ -77,8 +79,8 @@ function Mainpage (){
           ))}
         </MDBTableBody>
       </MDBTable>
-      {/* <h1>{user}</h1> */}
-      <MDBTable className="table" align='middle'>
+
+      <MDBTable className="table" align='middle' style={{border:'inset', borderRadius: '50%'}}>
         <MDBTableHead>
           <tr>
           <th scope='col'>id</th>
@@ -88,8 +90,6 @@ function Mainpage (){
           <th scope='col'>Action</th>
           </tr>
         </MDBTableHead>
-
-      
         <MDBTableBody>
         {user.map((data) => (
             <tr key={data._id}>
@@ -102,8 +102,7 @@ function Mainpage (){
           ))}
         </MDBTableBody>
       </MDBTable>
-      
-        </div>
+      </div>
     )
   }
 }

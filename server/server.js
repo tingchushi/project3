@@ -59,6 +59,13 @@ app.get('/api/all', async (req,res)=>{
   res.status(200).json({msg:all})
 })
 
+app.get('/api/all/:id', async (req,res)=>{
+  const id = req.params;
+  console.log(id);
+  const details = await User.findOne({id:id});
+  res.status(200).json({msg:"all", details})
+})
+
 //signup
 app.post("/api/signup",async (req,res)=>{
   const { username, password, email } = req.body;  
@@ -122,14 +129,16 @@ try {
     // console.log(findRole)
     // const findRole = details.role;
     // console.log(findRole)
+    const token = details[0]._id;
+    console.log(token);
     if(findRole === "admin"){
-     return res.status(200).json({msg: "admin"})
+     return res.status(200).json({msg: "admin", token})
     }
     if(findRole === "supervisor"){
-      return res.status(200).json({msg: "admin"})
+      return res.status(200).json({msg: "admin", token})
      }
      if(findRole === "user"){
-      return res.status(200).json({msg: "admin"})
+      return res.status(200).json({msg: "admin", token})
      }
     res.redirect("/");
   } else {

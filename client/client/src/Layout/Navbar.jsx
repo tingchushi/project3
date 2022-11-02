@@ -6,6 +6,11 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { FcFactoryBreakdown } from 'react-icons/fc';
 
 function Navbar1() {
+    const handleLogout = () =>{
+        localStorage.clear();
+        alert("Logout Successfully")
+    }
+
   return (
     <>
       <nav className="navbar fixed-top navbar-expand-lg" style={{backgroundColor:"white", color:"white"}}>
@@ -23,11 +28,8 @@ function Navbar1() {
                     <a className="nav-link" href="/signup">Registration</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/">Logout</a>
+                    <a className="nav-link" href="/" onClick={handleLogout}>Logout</a>
                 </li>
-                {/* <li className="nav-item">
-                    <a className="nav-link" href="/">Contatti</a>
-                </li>    */}
             </ul>
         </div>
     </div>

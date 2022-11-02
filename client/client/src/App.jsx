@@ -5,7 +5,7 @@ import Login from "./components/Login"
 import Mainpage from "./components/Mainpage"
 import Layout from "./Layout/Layout"
 import Signup from "./components/Signup"
-import AdminDashboard from "./components/AdminDasboard"
+import AdminDashboard from "./components/Dashboard"
 
 function App() {
   return (
