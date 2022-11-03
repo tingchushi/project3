@@ -1,6 +1,7 @@
 import { MDBBtn } from 'mdb-react-ui-kit';
 import { useState, useEffect } from 'react';
-import Calendar from 'react-calendar';
+// import Calendar from 'react-calendar';
+import ItemList from './ItemList';
 import 'react-calendar/dist/Calendar.css';
 
 
@@ -37,7 +38,7 @@ function dashboard() {
 
     return (
         <>
-        <div style={{display:"flex"}} >
+        <div style={{display:"flex", paddingTop:"50px"}} >
           <div style={{padding: "10px", align:"center"}} >
           <div className="card">
             <div className="card-body">
@@ -60,17 +61,8 @@ function dashboard() {
           </div>
         </div>
         <div className='app'>
-      <h1 className='text-center'>React Calendar</h1>
-      <div className='app'>
-      <h1 className='text-center'>React Calendar</h1>
-      <div className='calendar-container'>
-        <Calendar onChange={setDate} value={date} />
-      </div>
-      <p className='text-center'>
-        <span className='bold'>Selected Date:</span>{' '}
-        {date.toDateString()}
-      </p>
-    </div>
+      <h1 className='text-center'>Item List</h1>
+      <ItemList />
     </div>
    </>
         )

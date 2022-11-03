@@ -117,7 +117,7 @@ try {
   const user = await User.findOne({ username });
   if (user === null) {
     res.status(401).json({ msg: "No user" });
-    console.log(user);
+    // console.log(user);
     return;
   }
 
