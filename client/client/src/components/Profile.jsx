@@ -4,6 +4,23 @@ import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import GrUserAdmin from '@meronex/icons/gr/GrUserAdmin';
 import AiOutlineUser from '@meronex/icons/ai/AiOutlineUser';
+import {
+  MDBCol,
+  MDBContainer,
+  MDBRow,
+  MDBCard,
+  MDBCardText,
+  MDBCardBody,
+  MDBCardImage,
+  MDBBtn,
+  MDBBreadcrumb,
+  MDBBreadcrumbItem,
+  MDBProgress,
+  MDBProgressBar,
+  MDBIcon,
+  MDBListGroup,
+  MDBListGroupItem
+} from 'mdb-react-ui-kit';
 
 function Profile() {
   const [username, setUsername] = useState([]); 
@@ -37,46 +54,61 @@ function Profile() {
   })
 
     return (
-        <>
-        <CardGroup >
-            <Card >
-            <Card.Body className="text-start">
-            <div className="container">
-                <div className="row">
-                    <div className="col-sm">
-                    <img src="..." alt="..." className="img-thumbnail"></img>
-                    </div>
-                    <div className="col-sm">
-                        <p className="card-title">Username: {username}</p>
-                        <p className="card-title">Email: {email}</p>
-                        <p className="card-title">Id: {userId}</p>
-                    </div>
-                    <div className="col-sm">
-                    <div className='text-center'>
-                        Access: {role}
-                    </div>
-                    <div className='text-center'>
-                        {role === "user" ? <AiOutlineUser style={{fontSize: '50px', paddingTop:"10px"}} /> : <GrUserAdmin style={{fontSize: '50px', paddingTop:"10px"}}/>}
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <>
+    <br />
+    <br />
+    <h1>User Profile</h1>
+    <section style={{ backgroundColor: "white" }}>
+      <MDBContainer className="py-5">
 
-            <div className="container">
-            <div className="row">
-                <div className="col-sm">
-                
-                </div>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-sm">
-
-              </div>
-            </div>
-            </Card.Body>
-        </Card>
-        </CardGroup>
+        <MDBRow>
+          <MDBCol lg="4">
+            <MDBCard className="mb-4" align="center">
+              <MDBCardBody>
+                <div className="rounded-circle">
+                        {role === "user" ? <AiOutlineUser style={{fontSize: '98px'}} />  : <GrUserAdmin style={{fontSize: '98px'}}/>}
+                        <p>{role === "user" ? "Access : User" : "Access : Admin"}</p>
+                    </div>
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+          <MDBCol lg="8">
+            <MDBCard className="mb-4">
+              <MDBCardBody>
+                <MDBRow>
+                  <MDBCol sm="3">
+                    <MDBCardText>Username</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">{username}</MDBCardText>
+                  </MDBCol>
+                </MDBRow>
+                <hr />
+                <MDBRow>
+                  <MDBCol sm="3">
+                    <MDBCardText>Email</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">{email}</MDBCardText>
+                  </MDBCol>
+                </MDBRow>
+                <hr />
+                <MDBRow>
+                  <MDBCol sm="3">
+                    <MDBCardText>ID</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">{userId}</MDBCardText>
+                  </MDBCol>
+                </MDBRow>
+     
+     
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+    </section>
    </>
         )
     }

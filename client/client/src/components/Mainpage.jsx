@@ -6,7 +6,7 @@ import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-reac
 function Mainpage (){
   const [data, setData] = useState([])
   const [user, setUser] = useState([])
-  const [authenticated, setauthenticated] = useState(null);
+  const [holidays, setHolidays] = useState([]);
   
     useEffect(()=>{
       fetch("http://localhost:3000/api/item", {
@@ -14,7 +14,6 @@ function Mainpage (){
         headers: {
           "Content-Type": "application/json",
         },
-        // body: JSON.stringify(data),
       })
       .then((response) =>  response.json())
       .then((data) => {
@@ -28,7 +27,6 @@ function Mainpage (){
         headers: {
           "Content-Type": "application/json",
         },
-        // body: JSON.stringify(data),
       })
       .then((response) =>  response.json())
       .then((data) => {
@@ -36,22 +34,33 @@ function Mainpage (){
       });
     },[])
 
-      console.log(data)
-      console.log(user)
-  
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("authenticated");
-    if (loggedInUser) {
-      setauthenticated(loggedInUser);
-    }
-  }, []);
-  if (!authenticated) {
-    return ;
-  } else {
-    return (
-      
-<div style={{display:"flex", justifyContent:"center"}} >
+      // console.log(data)
+      // console.log(user)
 
+
+    const handleDelete = (id) => () => {
+      fetch(`http://localhost:3000/api/deleteItem/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((req) => {
+            if (req.ok){
+              setData(data.filter((data) => data._id !== id));
+            }
+          })
+          .then((data) => console.log(data));
+      };
+
+    return (
+    <>
+    <br />
+    <br />
+    <MDBBtn style={{float: 'left'}} href="/dashboard">Back to Dashboard</MDBBtn>
+    <br />
+    <br />
+    <div style={{justifyContent:"center"}} >
     <MDBTable className="table" align='middle' style={{border:'inset'}}>
         <MDBTableHead>
           <tr>
@@ -60,7 +69,8 @@ function Mainpage (){
           <th scope='col'>Description</th>
           <th scope='col'>Price</th>
           <th scope='col'>Creation Date</th>
-          <th scope='col'>Action</th>
+          <th scope='col'>Updata Item</th>
+          <th scope='col'>Remove</th>
           </tr>
         </MDBTableHead>
     
@@ -72,7 +82,8 @@ function Mainpage (){
               <td>{data.description}</td>
               <td>{data.price}</td>
               <td>{data.createdAt}</td>
-              <td><MDBBtn>Edit</MDBBtn></td>
+              <td><button>Edit</button></td>
+              <td><button onClick={handleDelete(data._id)}>Delete</button></td>
             </tr>
           ))}
         </MDBTableBody>
@@ -101,8 +112,9 @@ function Mainpage (){
         </MDBTableBody>
       </MDBTable>
       </div>
+      </>
     )
   }
-}
 
 export default Mainpage
+

@@ -8,8 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function ItemList () {
   const [data, setData] = useState([])
-  // const [date, setDate] = useState(' ')
-  
+
   useEffect(()=>{
     fetch("http://localhost:3000/api/item", {
       method: "GET",
@@ -21,7 +20,6 @@ function ItemList () {
     .then((data) => {
       console.log(data)
       setData(data)
-      // setDate(data[0].createdAt)
       
     });
   },[])
@@ -35,7 +33,7 @@ function ItemList () {
     })
       .then((req) => {
         if (req.ok){
-          setData(data.filter((del) => del._id !== id));
+          setData(data.filter((del, i) => del._id !== id ));
           console.log(del)
         }
       })
@@ -44,6 +42,9 @@ function ItemList () {
 
 return (
 <>
+<div>
+  <h1>Item List</h1>
+</div>
 <CardGroup >
 {data.map((item, i)=> {
   return (

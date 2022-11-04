@@ -35,7 +35,7 @@ function LoginForm() {
 
         .then((response) => {
             if (response.ok) {
-              navigate("/welcome");
+              navigate("/dashboard");
             } else {
               setError("Invalid Username/Password");
             }
@@ -46,8 +46,7 @@ function LoginForm() {
             localStorage.setItem('token', JSON.stringify(data));
             const info = JSON.parse(localStorage.getItem('token'));
             console.log(info);
-            // const abc = localStorage.setItem('token', JSON.stringify(data));
-            // console.log(abc)
+
           });
     };
     
@@ -88,14 +87,14 @@ function LoginForm() {
            <a href="#!" className="small text-muted">Privacy policy</a>
          </div>
 
-      </MDBCardBody>
-     </MDBCol>
+              </MDBCardBody>
+            </MDBCol>
 
-   </MDBRow>
- </MDBCard>
+          </MDBRow>
+        </MDBCard>
 
- </MDBContainer>
- </fieldset>
+        </MDBContainer>
+        </fieldset>
        </form>
      
         </>
