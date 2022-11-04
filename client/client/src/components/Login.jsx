@@ -44,6 +44,10 @@ function LoginForm() {
           .then((data) => {
             console.log(data);
             localStorage.setItem('token', JSON.stringify(data));
+            const info = JSON.parse(localStorage.getItem('token'));
+            console.log(info);
+            // const abc = localStorage.setItem('token', JSON.stringify(data));
+            // console.log(abc)
           });
     };
     

@@ -7,6 +7,7 @@ specifiers:
   '@fullcalendar/interaction': ^5.11.3
   '@fullcalendar/react': ^5.11.2
   '@fullcalendar/timegrid': ^5.11.3
+  '@meronex/icons': ^4.0.0
   '@mui/material': ^5.10.12
   '@popperjs/core': ^2.11.6
   '@react-icons/all-files': ^4.1.0
@@ -25,6 +26,7 @@ specifiers:
   react: ^18.2.0
   react-big-calendar: ^1.5.0
   react-bootstrap: ^2.5.0
+  react-bootstrap-icons: ^1.9.1
   react-bootstrap-sidebar-menu: ^2.0.3
   react-calendar: ^3.9.0
   react-dom: ^18.2.0
@@ -39,6 +41,7 @@ dependencies:
   '@fullcalendar/interaction': 5.11.3
   '@fullcalendar/react': 5.11.2_biqbaboplfbrettd7655fr4n2y
   '@fullcalendar/timegrid': 5.11.3
+  '@meronex/icons': 4.0.0_react@18.2.0
   '@mui/material': 5.10.12_rrrb7hooev7eucxoqykubwnawy
   '@popperjs/core': 2.11.6
   '@react-icons/all-files': 4.1.0_react@18.2.0
@@ -54,6 +57,7 @@ dependencies:
   react: 18.2.0
   react-big-calendar: 1.5.0_biqbaboplfbrettd7655fr4n2y
   react-bootstrap: 2.5.0_rj7ozvcq3uehdlnj3cbwzbi5ce
+  react-bootstrap-icons: 1.9.1_react@18.2.0
   react-bootstrap-sidebar-menu: 2.0.3_rj7ozvcq3uehdlnj3cbwzbi5ce
   react-calendar: 3.9.0_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
@@ -660,6 +664,16 @@ packages:
       react-is: 16.13.1
     dev: false
 
+  /@meronex/icons/4.0.0_react@18.2.0:
+    resolution: {integrity: sha512-WnoxUT02qawZSvsoPSwe7YOqOk0APysIHugiD3dYdc/QNeoigN4PD8mmmtmZFKlv8/Z7eERub0BmPkWcJ1BI+w==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      camelcase: 5.3.1
+      ncp: 2.0.0
+      react: 18.2.0
+    dev: false
+
   /@mui/base/5.0.0-alpha.104_rj7ozvcq3uehdlnj3cbwzbi5ce:
     resolution: {integrity: sha512-tQPxZTzfYMwxYfKhEwufbTfdLpNjFdW7bXq6dK0j8651AAyZL4M8wynWUQ98hH1362R26mZFhVxHB2UD9t7VuA==}
     engines: {node: '>=12.0.0'}
@@ -1176,6 +1190,11 @@ packages:
 
   /callsites/3.1.0:
     resolution: {integrity: sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==}
+    engines: {node: '>=6'}
+    dev: false
+
+  /camelcase/5.3.1:
+    resolution: {integrity: sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==}
     engines: {node: '>=6'}
     dev: false
 
@@ -2624,6 +2643,11 @@ packages:
     hasBin: true
     dev: true
 
+  /ncp/2.0.0:
+    resolution: {integrity: sha512-zIdGUrPRFTUELUvr3Gmc7KZ2Sw/h1PiVM0Af/oHB6zgnV1ikqSfRk+TOufi79aHYCW3NiOXmr1BP5nWbzojLaA==}
+    hasBin: true
+    dev: false
+
   /neo-async/2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: false
@@ -2859,6 +2883,15 @@ packages:
       react-dom: 18.2.0_react@18.2.0
       react-overlays: 5.2.1_biqbaboplfbrettd7655fr4n2y
       uncontrollable: 7.2.1_react@18.2.0
+    dev: false
+
+  /react-bootstrap-icons/1.9.1_react@18.2.0:
+    resolution: {integrity: sha512-EOxEkiKt/ucn17cXHzUcxbVmH7YCFjV5ifrIB+aGkfxjXnGGJyBDfG5kRChoCDs1Y7vLRtgSauOq+whF751Yzg==}
+    peerDependencies:
+      react: '>=16.8.6'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
     dev: false
 
   /react-bootstrap-sidebar-menu/2.0.3_rj7ozvcq3uehdlnj3cbwzbi5ce:

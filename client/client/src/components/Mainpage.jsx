@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useNavigate } from 'react';
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
-import AdminDashboard from './Dashboard';
 
 
 
@@ -48,7 +46,7 @@ function Mainpage (){
     }
   }, []);
   if (!authenticated) {
-    return <useNavigate replace to="/" />;
+    return ;
   } else {
     return (
       

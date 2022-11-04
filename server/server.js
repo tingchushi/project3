@@ -59,12 +59,20 @@ app.get('/api/all', async (req,res)=>{
   res.status(200).json({msg:all})
 })
 
-app.get('/api/all/:id', async (req,res)=>{
-  const id = req.params;
-  console.log(id);
-  const details = await User.findOne({id:id});
-  res.status(200).json({msg:"all", details})
-})
+app.get("/api/all/:id", async (req, res) => {
+    const { id } = req.params;
+ 
+    try {
+        const userI = await User.findById(id).exec();
+        if (userI === null) {
+          res.status(404).json({ error: "Not found" });
+        } else {
+          res.status(200).json(userI);
+        }
+      } catch (error) {
+        res.status(500).json(error);
+      }
+    });
 
 //signup
 app.post("/api/signup",async (req,res)=>{
@@ -126,10 +134,10 @@ try {
     req.session.userid = user._id;
     const details = await User.find({username: username});
     const findRole = details[0].role;
-    // console.log(findRole)
+    console.log(findRole)
     // const findRole = details.role;
     // console.log(findRole)
-    const token = details[0]._id;
+    let token = details[0]._id;
     console.log(token);
     if(findRole === "admin"){
      return res.status(200).json({msg: "admin", token})
@@ -196,18 +204,17 @@ app.post('/logout', (req, res) => {
   });
 });
 
-
-app.get("/api/additem", async (req, res) => {
+app.post("/api/additem", async (req, res) => {
   const { name, description, price } = req.body;  
   try {
-    const newUser = await Item.create(
+    const newItem = await Item.create(
       {
         name: name,
         description: description,
         price: price,
       }
     )
-    res.json(newUser);
+    res.json(newItem);
 }
 catch(error){
 console.log(error)
@@ -217,6 +224,22 @@ app.get(("/api/item"), async(req,res)=>{
   const showAll = await Item.find({});
   res.status(200).json(showAll)
 })
+
+app.delete("/api/deleteItem/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleteUser = await Item.findByIdAndDelete(id);
+
+    if (deleteUser === null) {
+      res.status(400).json({ msg: "Wrong ID" });
+    } else {
+      res.status(200).json(deleteUser);
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
+});
 
 mongoose.connection.on('connecting', () => { 
   console.log('connecting')

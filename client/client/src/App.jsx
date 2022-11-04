@@ -6,6 +6,7 @@ import Mainpage from "./components/Mainpage"
 import Layout from "./Layout/Layout"
 import Signup from "./components/Signup"
 import AdminDashboard from "./components/Dashboard"
+import Testing from "./components/Testing"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Mainpage />} />
         <Route path="/welcome" element={<AdminDashboard />} />
+        <Route path='/testing' element={<Mainpage />} />
       </Route>
      </Routes>
     </BrowserRouter>
