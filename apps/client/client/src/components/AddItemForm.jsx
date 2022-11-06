@@ -2,7 +2,6 @@
 import { React } from "react"
 import { useState } from "react";
 import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBInput, MDBIcon} from 'mdb-react-ui-kit';
-import { useNavigate } from "react-router-dom";
 
 function AddItemForm () {
 const [error , setError] = useState(' ')

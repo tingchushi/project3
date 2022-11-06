@@ -1,4 +1,4 @@
-import { useState, useEffect, useNavigate } from 'react';
+import { useState, useEffect} from 'react';
 import {
   MDBBtn,
   MDBContainer,
@@ -14,16 +14,18 @@ import {
   MDBTableBody
 }
 from 'mdb-react-ui-kit';
+import { useNavigate } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { FcFactoryBreakdown } from 'react-icons/fc';
 
 
 
 function Edititem (){
   const [data, setData] = useState([]);
-  const [open, setOpen] = useState(false);
-  
+  const [error, setError] = useState(' ')
+  const navigate = useNavigate();
+  // const [update, setUpdate] = useState(' ');
+
     useEffect(()=>{
       fetch("http://localhost:3000/api/item", {
         method: "GET",
@@ -52,17 +54,15 @@ function Edititem (){
           .then((data) => console.log(data));
       };
 
-      const handleSubmit = (e) => {
-        if (e && e.preventDefault) { // add?
-          e.preventDefault();
-          e.persist();
-      }
-        
-        const data = Object.fromEntries(new FormData(e.target));
-        console.log(data)
+      const handleSubmit = () => {
+        event.preventDefault();
+        console.log(event)
+        console.log("hello")
+        const data = Object.fromEntries(new FormData(event.target));
+        console.log(data._id)
     
-        fetch(`http://localhost:3000/api/edit/${id}`, {
-          method: "put",
+        fetch(`http://localhost:3000/api/updateitem/${data._id}`, {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -71,19 +71,16 @@ function Edititem (){
   
           .then((response) => {
               if (response.ok) {
-                navigate("/dashboard");
+                navigate("/itemlist");
               } else {
-                setError("Invalid Username/Password");
+                setError("Invalid input");
               }
               return response.json();
             })
             .then((data) => {
-              console.log(data);
-              localStorage.setItem('token', JSON.stringify(data));
-              const info = JSON.parse(localStorage.getItem('token'));
-              console.log(info);
-  
+              console.log(data); 
             });
+            window.location.reload(false);
       };
 
     return (
@@ -117,20 +114,21 @@ function Edititem (){
               <td>{data.createdAt}</td>
               <td>    
                 <div>
+                  <Popup contentStyle={{width: "400px"}} trigger={<button> Edit </button>} >
                 <form method="post" onSubmit={handleSubmit}>
                   <fieldset>
-                  <Popup contentStyle={{width: "300px"}} trigger={<button> Edit </button>} >
                   <MDBContainer className="my-5">
                     <MDBCard>
+                    <MDBInput wrapperClass='mb-4' label='id' size="lg" name='_id' value={data._id} />
                     <MDBInput wrapperClass='mb-4' label='name' type='text' size="lg" name='name' placeholder="Item Name"/>
                     <MDBInput wrapperClass='mb-4' label='description' type='text' size="lg" name="description"placeholder="Item Description"/>
                     <MDBInput wrapperClass='mb-4' label='price' type='interger' size="lg" name='price' placeholder="$Price"/>
                     <MDBBtn className="mb-4 px-5" color='dark' size='lg'>Update</MDBBtn>
                     </MDBCard>
                     </MDBContainer>
-                  </Popup>
                   </fieldset>
                   </form>
+                  </Popup>
                 </div></td>
               <td><button onClick={handleDelete(data._id)}>Delete</button></td>
             </tr>

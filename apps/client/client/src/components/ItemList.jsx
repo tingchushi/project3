@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { React } from "react"
-import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBInput, MDBIcon, MDBCheckbox } from 'mdb-react-ui-kit';
+import { MDBIcon } from 'mdb-react-ui-kit';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,6 +9,23 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 function ItemList () {
   const [data, setData] = useState([])
 
+  const [userRole, setUserRole] = useState(' ')
+
+  useEffect(()=>{
+    const info = JSON.parse(localStorage.getItem('token'));
+    const id = info.token;
+  
+    fetch(`http://localhost:3000/api/all/${id}`, {
+      method: "GET",
+    })
+    .then((response) =>  response.json())
+    .then((data) => {
+      setUserRole(data.role)
+      console.log(userRole)
+
+    });
+  },[])
+    
   useEffect(()=>{
     fetch("http://localhost:3000/api/item", {
       method: "GET",
@@ -42,15 +59,20 @@ function ItemList () {
 
 return (
 <>
+<br />
+<br />
 <div>
   <h1>Item List</h1>
 </div>
-<CardGroup >
+<CardGroup style={{    
+    alignItems: 'center',
+    // flex: '1',
+    justifyContent: 'center'}}>
 {data.map((item, i)=> {
   return (
 <div>
     <Card key={i} style={{width:"304px"}} align="center">
-    <i className="bi bi-trash3-fill" align="right" onClick={handleDelete(item._id)}></i>
+    {userRole === "admin" ? <i className="bi bi-trash3-fill" align="right" onClick={handleDelete(item._id)}></i> : null}
     <MDBIcon far icon="trash-alt" />
     <Card.Body >
       <Card.Title>{item.name}</Card.Title>
@@ -70,7 +92,7 @@ return (
        Created { Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / ( 60 * 60 * 24 * 1000) )} days ago<br />
         </small> 
     </Card.Footer>
-      <button onClick={handleDelete(item._id)}>Delete</button>
+      <button onClick={handleDelete(item._id)}>Add to Cart</button>
   </Card>
 </div>
   )}

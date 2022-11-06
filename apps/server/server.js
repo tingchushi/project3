@@ -7,12 +7,14 @@ const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI)
 const User = require("./models/Users.js");
 const Item = require("./models/Items.js");
-const cors = require('cors')
+const Cart = require('./models/Cart.js');
+const cors = require('cors');
 
 const app = express()
 const port = process.env.PORT ?? 3000
 
 app.use(express.json());
+
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -24,22 +26,6 @@ app.use(express.static("../client/client/dist"));
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
-})
-
-app.get("/*", (req, res) => {
-  res.sendFile(path.resolve("../client/client/dist/index.html"));
-});
-
-app.get('/api/admin', (req, res) => {
-  res.send('Admin!');
-})
-
-app.get('/api/supervisor', (req, res) => {
-  res.send('Supervisor!');
-})
-
-app.get('/api/user', (req, res) => {
-  res.send('User!');
 })
 
 //seed
@@ -208,6 +194,13 @@ app.post('/logout', (req, res) => {
   });
 });
 
+//Show all item
+app.get(("/api/item"), async(req,res)=>{
+  const showAll = await Item.find({});
+  res.status(200).json(showAll)
+})
+
+//Add item
 app.post("/api/additem", async (req, res) => {
   const { name, description, price } = req.body;  
   try {
@@ -224,11 +217,27 @@ catch(error){
 console.log(error)
 }});
 
-app.get(("/api/item"), async(req,res)=>{
-  const showAll = await Item.find({});
-  res.status(200).json(showAll)
-})
+//Update item
+app.put("/api/updateitem/:id", (req, res) => {
+  const { name, description, price } = req.body;
+  if (req.body){
+    Item.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      // { new: true },
+      (err, updatedItem) => {
+        if (err) {
+          res.status(400).json({ error: err.message });
+        }
+        res.status(200).json(updatedItem);
+      })
+      return;
+    }else {
+      return res.status(400).json({msg:"wrong input"})
+    }
+});
 
+//Delete item
 app.delete("/api/deleteItem/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -244,6 +253,88 @@ app.delete("/api/deleteItem/:id", async (req, res) => {
     res.status(500).json({ msg: error });
   }
 });
+
+//Cart seed
+app.get("/api/cart/seed", async (req, res) => {
+  try {
+    const seed = await Cart.create(
+         {cart: [{
+           username: "admin",
+           password: "pass"
+          },
+          {
+            username: "user",
+            password: "pass"
+          }
+          ]} 
+      );
+      res.status(200).json(seed);
+    } catch (error) {
+    console.log(error);
+  };
+});
+
+//Create new Cart
+app.post('/api/cart/create/:id', async(req, res) => {
+  const id = req.params.id;
+    // const findUser =  await User.findById({_id:_id})
+    // if (findUser === null) {
+
+      try {
+        const newUserCart = await Cart.create(
+          {
+            id: id,
+            cart:[]
+          },
+          )
+          res.json(newUserCart);
+        }
+        catch(error){
+          console.log(error)
+        };
+      // }
+  }) 
+
+//Show Cart
+app.get('/api/cart/all', async (req,res)=>{
+  const allCart = await Cart.find({});
+  res.status(200).json(allCart)
+})
+
+//Update Cart(Add and Delete)
+app.post("/api/updatecart/:id", async (req, res) => {
+  const id = req.params.id;
+  console.log(req.body)
+    const result = await Cart.findByIdAndUpdate(
+      { _id: id }, 
+      { $push: { cart: req.body } },
+      function (error, success) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log(success);
+        }
+      })
+       return res.json(result);
+  
+  })
+
+  // app.post("/api/updatecart/:id", async (req, res) => {
+  //   const id = req.params.id;
+  //   console.log(req.body)
+  //     const result = await Cart.findByIdAndUpdate(
+  //       { _id: id }, 
+  //       { $push: { cart: req.body } },
+  //       function (error, success) {
+  //         if (error) {
+  //           console.log(error);
+  //         } else {
+  //           console.log(success);
+  //         }
+  //       })
+  //        return res.json(result);
+    
+  //   })
 
 mongoose.connection.on('connecting', () => { 
   console.log('connecting')
