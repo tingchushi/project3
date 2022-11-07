@@ -33,8 +33,16 @@ app.get("/api/seed", async (req, res) => {
   try {
     const seed = await User.create(
         {
+          username: "user",
+          email: "user",
+          password: bcrypt.hashSync("user", bcrypt.genSaltSync(10)),
+          role: "user"
+        }, 
+        {
           username: "admin",
-          password: "pass",
+          email: "admin",
+          password: bcrypt.hashSync("admin", bcrypt.genSaltSync(10)),
+          role: "admin"
         }
       );
       res.json(seed);
@@ -254,88 +262,107 @@ app.delete("/api/deleteItem/:id", async (req, res) => {
   }
 });
 
-//Cart seed
-app.get("/api/cart/seed", async (req, res) => {
-  try {
-    const seed = await Cart.create(
-         {cart: [{
-           username: "admin",
-           password: "pass"
-          },
-          {
-            username: "user",
-            password: "pass"
-          }
-          ]} 
-      );
-      res.status(200).json(seed);
-    } catch (error) {
-    console.log(error);
-  };
-});
+// //Cart seed
+// app.get("/api/cart/seed", async (req, res) => {
+//   try {
+//     const seed = await Cart.create(
+//          {cart: [{
+//            username: "admin",
+//            password: "pass"
+//           },
+//           {
+//             username: "user",
+//             password: "pass"
+//           }
+//           ]} 
+//       );
+//       res.status(200).json(seed);
+//     } catch (error) {
+//     console.log(error);
+//   };
+// });
 
 //Create new Cart
-app.post('/api/cart/create/:id', async(req, res) => {
-  const id = req.params.id;
-    // const findUser =  await User.findById({_id:_id})
-    // if (findUser === null) {
+// app.post('/api/cart/create/:id', async(req, res) => {
+//   const id = req.params.id;
+//     // const findUser =  await User.findById({_id:_id})
+//     // if (findUser === null) {
+//       try {
+//         const newUserCart = await Cart.create(
+//           {
+//             cart:[]
+//           },
+//           )
+//           res.json(newUserCart);
+//         }
+//         catch(error){
+//           console.log(error)
+//         };
+//   }) 
 
-      try {
-        const newUserCart = await Cart.create(
-          {
-            id: id,
-            cart:[]
-          },
-          )
-          res.json(newUserCart);
-        }
-        catch(error){
-          console.log(error)
-        };
-      // }
-  }) 
+// //Show Cart
+// app.get('/api/cart/all', async (req,res)=>{
+//   const allCart = await Cart.find({});
+//   res.status(200).json(allCart)
+// })
 
-//Show Cart
-app.get('/api/cart/all', async (req,res)=>{
-  const allCart = await Cart.find({});
-  res.status(200).json(allCart)
+// //Update Cart(Add and Delete)
+// app.post("/api/updatecart/:id", async (req, res) => {
+//   const id = req.params.id;
+//   console.log(req.body)
+//     const result = await Cart.findByIdAndUpdate(
+//       { _id: id }, 
+//       { $push: { cart: req.body } },
+//       function (error, success) {
+//         if (error) {
+//           console.log(error);
+//         } else {
+//           console.log(success);
+//         }
+//       })
+//        return res.json(result);
+  
+//   })
+
+
+//Add item to Cart
+app.post("/api/cart/create", async (req, res) => {
+  const { userId, itemId } = req.body;  
+  try {
+    const newCart = await Cart.create(
+      {
+        userId: userId,
+        itemId: itemId
+      }
+    )
+    res.json(newCart);
+}
+catch(error){
+console.log(error)
+}});
+
+//Show all Cart
+app.get('/api/cart/all', async (req,res) => {
+  const allCart = await Cart.find().populate('_id').exec();
+  res.status(200).json({msg:allCart})
 })
 
-//Update Cart(Add and Delete)
-app.post("/api/updatecart/:id", async (req, res) => {
-  const id = req.params.id;
-  console.log(req.body)
-    const result = await Cart.findByIdAndUpdate(
-      { _id: id }, 
-      { $push: { cart: req.body } },
-      function (error, success) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log(success);
-        }
-      })
-       return res.json(result);
-  
-  })
+app.delete("/api/cart/delete/:id", async (req, res) => {
+  const { id } = req.params;
 
-  // app.post("/api/updatecart/:id", async (req, res) => {
-  //   const id = req.params.id;
-  //   console.log(req.body)
-  //     const result = await Cart.findByIdAndUpdate(
-  //       { _id: id }, 
-  //       { $push: { cart: req.body } },
-  //       function (error, success) {
-  //         if (error) {
-  //           console.log(error);
-  //         } else {
-  //           console.log(success);
-  //         }
-  //       })
-  //        return res.json(result);
-    
-  //   })
+  try {
+    const deleteUser = await Cart.findOneAndDelete({ itemId: id});
 
+    if (deleteUser === null) {
+      res.status(400).json({ msg: "Wrong ID" });
+    } else {
+      res.status(200).json(deleteUser);
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
+});
+ 
 mongoose.connection.on('connecting', () => { 
   console.log('connecting')
   console.log(mongoose.connection.readyState); //logs 2

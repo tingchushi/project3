@@ -7,9 +7,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function ItemList () {
-  const [data, setData] = useState([])
+  const [ data, setData ] = useState([]);
+  const [ userRole, setUserRole ] = useState(' ');
+  const [ cart, setCart ] = useState(' ')
 
-  const [userRole, setUserRole] = useState(' ')
+  const info = JSON.parse(localStorage.getItem('token'));
+  const tokens = info.token;
+  console.log(tokens)
 
   useEffect(()=>{
     const info = JSON.parse(localStorage.getItem('token'));
@@ -21,7 +25,6 @@ function ItemList () {
     .then((response) =>  response.json())
     .then((data) => {
       setUserRole(data.role)
-      console.log(userRole)
 
     });
   },[])
@@ -35,7 +38,6 @@ function ItemList () {
     })
     .then((response) =>  response.json())
     .then((data) => {
-      console.log(data)
       setData(data)
       
     });
@@ -55,6 +57,66 @@ function ItemList () {
         }
       })
       .then((data) => console.log(data));
+  };
+
+  const handleAddCart = (id) => () => {
+    event.preventDefault();
+    console.log(id);
+
+    fetch(`http://localhost:3000/api/cart/create`, {
+      method: "POST",
+      body: JSON.stringify({
+        userId : tokens,
+        itemId : id
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      
+    })
+      .then((req) => {
+        if (req.ok){
+        console.log(req)
+      }
+      })
+      .then((data) => console.log(data))
+
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const data = Object.fromEntries(new FormData(event.target));
+    console.log(data)
+
+    fetch("http://localhost:3000/api/signup", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Bad status code from server.');
+        } 
+        if (response.status !== 200){
+          setMsg('Username/Email Existed')
+          alert("Invalid Information")
+        }
+        console.log(response.status)
+        return response.json();
+      })
+    
+      .then((data) => {
+        if (data.msg) {
+          setMessage(data.msg);
+          
+        } else {
+          navigate("/");
+          alert("Welcome!!! You have sucessfully registered!")
+        }
+      });
   };
 
 return (
@@ -78,7 +140,9 @@ return (
       <Card.Title>{item.name}</Card.Title>
       <Card.Text align="left">
       Item ID : <br />
-      {item._id}<br /><br />
+      <div name="itemId">
+        {item._id}<br /><br />
+        </div>
       Item Description :<br />
       {item.description}<br /><br />
       Item Price: <br/>
@@ -92,11 +156,10 @@ return (
        Created { Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / ( 60 * 60 * 24 * 1000) )} days ago<br />
         </small> 
     </Card.Footer>
-      <button onClick={handleDelete(item._id)}>Add to Cart</button>
+      <button onClick={handleAddCart(item._id, tokens)}>Add to Cart</button>
   </Card>
 </div>
-  )}
-)}
+  )})}
 </CardGroup>
     </>
   )
