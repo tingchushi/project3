@@ -261,69 +261,7 @@ app.delete("/api/deleteItem/:id", async (req, res) => {
     res.status(500).json({ msg: error });
   }
 });
-
-// //Cart seed
-// app.get("/api/cart/seed", async (req, res) => {
-//   try {
-//     const seed = await Cart.create(
-//          {cart: [{
-//            username: "admin",
-//            password: "pass"
-//           },
-//           {
-//             username: "user",
-//             password: "pass"
-//           }
-//           ]} 
-//       );
-//       res.status(200).json(seed);
-//     } catch (error) {
-//     console.log(error);
-//   };
-// });
-
-//Create new Cart
-// app.post('/api/cart/create/:id', async(req, res) => {
-//   const id = req.params.id;
-//     // const findUser =  await User.findById({_id:_id})
-//     // if (findUser === null) {
-//       try {
-//         const newUserCart = await Cart.create(
-//           {
-//             cart:[]
-//           },
-//           )
-//           res.json(newUserCart);
-//         }
-//         catch(error){
-//           console.log(error)
-//         };
-//   }) 
-
-// //Show Cart
-// app.get('/api/cart/all', async (req,res)=>{
-//   const allCart = await Cart.find({});
-//   res.status(200).json(allCart)
-// })
-
-// //Update Cart(Add and Delete)
-// app.post("/api/updatecart/:id", async (req, res) => {
-//   const id = req.params.id;
-//   console.log(req.body)
-//     const result = await Cart.findByIdAndUpdate(
-//       { _id: id }, 
-//       { $push: { cart: req.body } },
-//       function (error, success) {
-//         if (error) {
-//           console.log(error);
-//         } else {
-//           console.log(success);
-//         }
-//       })
-//        return res.json(result);
-  
-//   })
-
+8
 
 //Add item to Cart
 app.post("/api/cart/create", async (req, res) => {
@@ -341,17 +279,24 @@ catch(error){
 console.log(error)
 }});
 
-//Show all Cart
+// Show all Cart
 app.get('/api/cart/all', async (req,res) => {
-  const allCart = await Cart.find().populate('_id').exec();
-  res.status(200).json({msg:allCart})
+  const allCart = await Cart.find().populate('itemId').exec();
+  res.status(200).json(allCart)
+})
+
+app.get('/api/cart/all/:id', async (req,res) => {
+  const id = req.params.id;
+  console.log(id);
+  const allCart = await Cart.find({ userId : id }).populate('itemId').exec();
+  res.status(200).json(allCart)
 })
 
 app.delete("/api/cart/delete/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deleteUser = await Cart.findOneAndDelete({ itemId: id});
+    const deleteUser = await Cart.findByIdAndDelete(id);
 
     if (deleteUser === null) {
       res.status(400).json({ msg: "Wrong ID" });

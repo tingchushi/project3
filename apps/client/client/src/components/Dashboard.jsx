@@ -9,6 +9,7 @@ function Dashboard() {
  const [userRole, setUserRole] = useState(' ')
 
   useEffect(()=>{
+    
     const info = JSON.parse(localStorage.getItem('token'));
     const id = info.token;
   
@@ -23,9 +24,9 @@ function Dashboard() {
     });
   },[])
 
-  useEffect(()=>{
-    const info = JSON.parse(localStorage.getItem('token'));
-  })
+  // useEffect(()=>{
+  //   const info = JSON.parse(localStorage.getItem('token'));
+  // })
 
     return (
   <>

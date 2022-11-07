@@ -8,9 +8,12 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Cart = () => {
   const [ data, setData ] = useState([]);
-
+ 
   useEffect(()=>{
-    fetch("http://localhost:3000/api/cart/all", {
+    const info = JSON.parse(localStorage.getItem('token'));
+    const id = info.token;
+    
+    fetch(`http://localhost:3000/api/cart/all/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -19,18 +22,57 @@ const Cart = () => {
     .then((response) =>  response.json())
     .then((data) => {
       setData(data)
+      
     });
   },[])
 
-console.log(data)
+// console.log(data[0].itemId.price) 
+
+const handleDelete = (id) => () => {
+  fetch(`http://localhost:3000/api/cart/delete/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((req) => {
+      if (req.ok){
+        setData(data.filter((del, i) => del._id !== id ));
+        console.log(del)
+      }
+    })
+    .then((data) => console.log(data));
+};
+
+const sum = data?.reduce((accumulator, object) => {
+  return accumulator + object.itemId.price;
+}, 0);
+
+console.log(sum);
 
   return (
     <div>
+       <br /> 
+       <br />
+       <br />
+      <MDBBtn style={{float: 'left'}} href="/dashboard">Back to Dashboard</MDBBtn>
     <br />
     <br />
-    <MDBBtn style={{float: 'left'}} href="/dashboard">Back to Dashboard</MDBBtn>
+    <CardGroup>   
+    <Card style={{width:"auto"}} align="center">
+    <Card.Body >
+        <Card.Title>Summary</Card.Title>
+        <Card.Text align="left">
+       Total: ${sum.toLocaleString()}<br />
+       Total Item: 
+        </Card.Text>
+      </Card.Body>
+  </Card>
+</CardGroup>
+    
     <br />
     <br />
+    <div>
     <CardGroup style={{    
     alignItems: 'center',
     // flex: '1',
@@ -39,26 +81,29 @@ console.log(data)
   return (
 <div>
     <Card key={i} style={{width:"304px"}} align="center">
+
     <MDBIcon far icon="trash-alt" />
     <Card.Body >
-      <Card.Title>{item.name}</Card.Title>
-      <Card.Text align="left">
-      Item ID : <br />
-      <div name="itemId">
-        {item._id}<br /><br />
-        </div>
-      Item Description :<br />
-      {item.itemId}<br /><br />
-      Item Price: <br/>
-      $ {item.userId}
-      </Card.Text>
-    </Card.Body>
-      <button onClick={handleAddCart(item._id, tokens)}>Add to Cart</button>
+        <Card.Title>{item.name}</Card.Title>
+        <Card.Text align="left">
+        Item Name : <br />
+
+          {item.itemId.name}<br /><br />
+
+        Item Description :<br />
+        {item.itemId.description}<br /><br />
+        Item Price: <br/>
+        $ {item.itemId.price}
+        </Card.Text>
+      </Card.Body>
+    <button onClick={handleDelete(item._id)}>Delete</button>
   </Card>
 </div>
   )})}
 </CardGroup>
     </div>
+          </div>
+    // </div>
   )
 }
 

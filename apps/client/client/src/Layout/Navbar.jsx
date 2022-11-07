@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FcFactoryBreakdown } from 'react-icons/fc';
 import { useState, useEffect, useRef } from 'react'
+import { redirect } from 'react-router-dom';
 
 function Navbar1() {
     const [userRole, setUserRole] = useState(' ')
@@ -11,8 +12,8 @@ function Navbar1() {
     }
 
     useEffect(()=>{
-      if(JSON.parse(localStorage.getItem('token')) == null ){
-        return;
+      if(JSON.parse(localStorage.getItem('token')) === null ){
+        redirect('/signup') ;
       } else {
         const info = JSON.parse(localStorage.getItem('token'));
         const id = info.token;
@@ -22,8 +23,8 @@ function Navbar1() {
             })
             .then((response) =>  response.json())
             .then((data) => {
-                setUserRole(data.role)
-                this.setUserRole(data.role, callback);
+                setUserRole(data?.role)
+                // this.setUserRole(data.role, callback);
                 console.log(userRole)
                 // window.location.reload(false);
             });   
@@ -45,10 +46,10 @@ function Navbar1() {
                     {userRole === "admin" || userRole === "user" ? <a className="nav-link" aria-current="page" href="/dashboard">Hi, {userRole}</a> : <a className="nav-link" aria-current="page" href="/">Home</a> }
                 </li>
                 <li className="nav-item">
-                {userRole === "admin" || userRole === "user" ? <a className="nav-link" aria-current="page" href="/"></a> : <a className="nav-link" aria-current="page" href="/signup">Registration</a> }
+                {userRole === "admin" || userRole === "user" ? <br /> : <a className="nav-link" aria-current="page" href="/signup">Registration</a> }
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/" onClick={handleLogout}>Logout</a>
+                    {userRole === ' ' ? <br/> :<a className="nav-link" href="/" onClick={handleLogout}>Logout</a>}
                 </li>
             </ul>
         </div>
