@@ -22,7 +22,6 @@ const Cart = () => {
     .then((response) =>  response.json())
     .then((data) => {
       setData(data)
-      
     });
   },[])
 
@@ -38,7 +37,6 @@ const handleDelete = (id) => () => {
     .then((req) => {
       if (req.ok){
         setData(data.filter((del, i) => del._id !== id ));
-        console.log(del)
       }
     })
     .then((data) => console.log(data));
@@ -50,6 +48,19 @@ const sum = data?.reduce((accumulator, object) => {
 
 console.log(sum);
 
+let counter = []
+
+data.forEach(function(obj) {
+    var key = JSON.stringify(obj.itemId)
+    counter[key] = (counter[key] || 0) + 1
+})
+
+console.log(Object.keys(counter))
+const title = (Object.keys(counter))
+const show = title.map(({ value, key }) => ({ [key]: value }));
+console.log(show);
+
+console.log(Object.values(counter))
   return (
     <div>
        <br /> 
@@ -94,15 +105,15 @@ console.log(sum);
         {item.itemId.description}<br /><br />
         Item Price: <br/>
         $ {item.itemId.price}
-        </Card.Text>
-      </Card.Body>
-    <button onClick={handleDelete(item._id)}>Delete</button>
-  </Card>
-</div>
-  )})}
-</CardGroup>
+            </Card.Text>
+          </Card.Body>
+          <button onClick={handleDelete(item._id)}>Delete</button>
+        </Card>
+        </div>
+        )})}
+      </CardGroup>
     </div>
-          </div>
+  </div>
     // </div>
   )
 }
