@@ -158,7 +158,7 @@ try {
 //update for admin and supervisor
 app.put("/api/edit/:id", (req, res) => {
   const { role } = req.body;
-  if (req.body.role === "admin" || req.body.role === "supervisor" || req.body.role === "user"){
+  if (req.body.role === "admin" || req.body.role === "user"){
 
     User.findByIdAndUpdate(
       req.params.id,

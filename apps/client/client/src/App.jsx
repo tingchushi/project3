@@ -23,6 +23,8 @@ function App() {
         <Route path="/overview" element={<Overview />} />
         <Route path="/itemlist" element={<Edititem />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/*" element={<Login />} />
+
       </Route>
      </Routes>
     </BrowserRouter>

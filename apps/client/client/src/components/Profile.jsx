@@ -21,37 +21,40 @@ import {
   MDBListGroup,
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
+import { useNavigate } from 'react-router-dom';
 
 function Profile() {
   const [username, setUsername] = useState([]); 
   const [role, setRole] = useState([]);
   const [email, setEmail] = useState([]);
   const [userId, setUserId ] = useState(' ');
-
+  
+  const navigate = useNavigate();
   
   useEffect(()=>{
-      const info = JSON.parse(localStorage.getItem('token'));
+    const info = JSON.parse(localStorage.getItem('token'));
+    if (info != null){
       const id = info.token;
-
-    fetch(`http://localhost:3000/api/all/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) =>  response.json())
-    .then((data) => {
+      
+      fetch(`http://localhost:3000/api/all/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) =>  response.json())
+      .then((data) => {
         console.log(data.role);
         setUsername(data.username)
         setEmail(data.email)
         setRole(data.role)
         setUserId(data._id)
-    });
-  },[])
-
-  useEffect(()=>{
-    const info = JSON.parse(localStorage.getItem('token'));
-  })
+      });
+    } else {
+      navigate("/");
+      window.location.reload(false);
+    }
+    },[])
 
     return (
     <>

@@ -119,7 +119,7 @@ function Edititem (){
                   <fieldset>
                   <MDBContainer className="my-5">
                     <MDBCard>
-                    <MDBInput wrapperClass='mb-4' label='id' size="lg" name='_id' value={data._id} />
+                    <MDBInput wrapperClass='mb-4' label='id' size="lg" name='_id' value={data._id} readonly/>
                     <MDBInput wrapperClass='mb-4' label='name' type='text' size="lg" name='name' placeholder="Item Name"/>
                     <MDBInput wrapperClass='mb-4' label='description' type='text' size="lg" name="description"placeholder="Item Description"/>
                     <MDBInput wrapperClass='mb-4' label='price' type='interger' size="lg" name='price' placeholder="$Price"/>
