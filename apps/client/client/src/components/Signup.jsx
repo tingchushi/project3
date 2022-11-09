@@ -23,7 +23,6 @@ function Signup () {
       cPassword: ""
     });
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [msg, setMsg] = useState(' ')
     const [passVal, setPassVal] = useState(' ')
@@ -128,12 +127,13 @@ function Signup () {
     function SubmitButton(){
       if (username && email && state.cPassword && state.password){
         if(state.cPassword === state.password){
-          return <MDBBtn className="mb-4 px-5" color='dark' size='lg'>Register</MDBBtn>
+          return <button className="mb-4 px-5" color='dark' size='lg'>Register</button>
         }else{
-          return <MDBBtn type="button" disabled className="mb-4 px-5" color='dark' size='lg'>Register</MDBBtn>
+          return <button type="button" disabled className="mb-4 px-5" color='dark' size='lg'>Register</button>
         }
       } else {
-        return <MDBBtn type="button" disabled className="mb-4 px-5" color='dark' size='lg'>Register</MDBBtn>
+        // return <MDBBtn type="button" disabled className="mb-4 px-5" color='dark' size='lg'>Register</MDBBtn>
+        return <button disabled variant="dark">Sign Up</button> 
       };
     };
 

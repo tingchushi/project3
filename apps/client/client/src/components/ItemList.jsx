@@ -5,51 +5,53 @@ import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useNavigate } from "react-router-dom";
 
 function ItemList () {
   const [ data, setData ] = useState([]);
   const [ userRole, setUserRole ] = useState(' ');
-  const [ cart, setCart ] = useState(' ')
+
+  const navigate = useNavigate();
 
   const info = JSON.parse(localStorage.getItem('token'));
-  const tokens = info.token;
-  console.log(tokens)
-
-  useEffect(()=>{
-    const info = JSON.parse(localStorage.getItem('token'));
-    const id = info.token;
   
-    fetch(`http://localhost:3000/api/all/${id}`, {
-      method: "GET",
-    })
-    .then((response) =>  response.json())
-    .then((data) => {
-      setUserRole(data.role)
-
-    });
-  },[])
+    const tokens = info.token;
+    console.log(tokens)
     
-  useEffect(()=>{
-    fetch("http://localhost:3000/api/item", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) =>  response.json())
-    .then((data) => {
-      setData(data)
+    useEffect(()=>{
+      const info = JSON.parse(localStorage.getItem('token'));
+      const id = info.token;
       
-    });
-  },[])
-  
-  const handleDelete = (id) => () => {
-    fetch(`http://localhost:3000/api/deleteItem/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+      fetch(`http://localhost:3000/api/all/${id}`, {
+        method: "GET",
+      })
+      .then((response) =>  response.json())
+      .then((data) => {
+        setUserRole(data.role)
+      });
+    },[])
+    
+    useEffect(()=>{
+      fetch("http://localhost:3000/api/item", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) =>  response.json())
+      .then((data) => {
+        setData(data)
+        
+      });
+    },[])
+    
+    const handleDelete = (id) => () => {
+      fetch(`http://localhost:3000/api/deleteItem/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((req) => {
         if (req.ok){
           setData(data.filter((del, i) => del._id !== id ));
@@ -57,45 +59,45 @@ function ItemList () {
         }
       })
       .then((data) => console.log(data));
-  };
-
-  const handleAddCart = (id) => () => {
-    event.preventDefault();
-    console.log(id);
-
-    fetch(`http://localhost:3000/api/cart/create`, {
-      method: "POST",
-      body: JSON.stringify({
-        userId : tokens,
-        itemId : id
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    };
+    
+    const handleAddCart = (id) => () => {
+      event.preventDefault();
+      console.log(id);
       
-    })
+      fetch(`http://localhost:3000/api/cart/create`, {
+        method: "POST",
+        body: JSON.stringify({
+          userId : tokens,
+          itemId : id
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        
+      })
       .then((req) => {
         if (req.ok){
-        console.log(req)
-      }
+          console.log(req)
+        }
       })
       .then((data) => console.log(data))
-
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const data = Object.fromEntries(new FormData(event.target));
-    console.log(data)
-
-    fetch("http://localhost:3000/api/signup", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+      
+    };
+    
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      
+      const data = Object.fromEntries(new FormData(event.target));
+      console.log(data)
+      
+      fetch("http://localhost:3000/api/signup", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Bad status code from server.');
@@ -107,7 +109,7 @@ function ItemList () {
         console.log(response.status)
         return response.json();
       })
-    
+      
       .then((data) => {
         if (data.msg) {
           setMessage(data.msg);
@@ -117,9 +119,9 @@ function ItemList () {
           alert("Welcome!!! You have sucessfully registered!")
         }
       });
-  };
-
-return (
+    };
+  
+    return (
 <>
 <br />
 <br />

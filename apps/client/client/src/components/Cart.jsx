@@ -1,14 +1,15 @@
 import { React, useState, useEffect } from 'react'
-import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBInput, MDBIcon} from 'mdb-react-ui-kit';
+import { MDBBtn, MDBIcon} from 'mdb-react-ui-kit';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
+
 const Cart = () => {
   const [ data, setData ] = useState([]);
- 
+
   useEffect(()=>{
     const info = JSON.parse(localStorage.getItem('token'));
     const id = info.token;
@@ -24,8 +25,6 @@ const Cart = () => {
       setData(data)
     });
   },[])
-
-// console.log(data[0].itemId.price) 
 
 const handleDelete = (id) => () => {
   fetch(`http://localhost:3000/api/cart/delete/${id}`, {
@@ -57,10 +56,9 @@ data.forEach(function(obj) {
 
 console.log(Object.keys(counter))
 const title = (Object.keys(counter))
-const show = title.map(({ value, key }) => ({ [key]: value }));
-console.log(show);
 
 console.log(Object.values(counter))
+
   return (
     <div>
        <br /> 
@@ -68,7 +66,7 @@ console.log(Object.values(counter))
        <br />
       <MDBBtn style={{float: 'left'}} href="/dashboard">Back to Dashboard</MDBBtn>
     <br />
-    <br />
+    <br /><a role="button" disabled href="/" aria-disabled="false" class="btn btn-secondary\\\ btn-lg disabled" style="width: 300px;">Item List</a>
     <CardGroup>   
     <Card style={{width:"auto"}} align="center">
     <Card.Body >

@@ -97,7 +97,7 @@ console.log(emailRegexp.test(emailToValidate));
     }
 
     if (findEmail){
-      return res.send("email existed");
+      res.status(204).json({ message: "Something went wrong" });
     }
 
         const newUser = await User.create(

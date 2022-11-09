@@ -3,6 +3,7 @@ import { React } from "react"
 import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBInput, MDBIcon, MDBCheckbox, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import Popup from 'reactjs-popup';
 import { Dropdown } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const Editrole = () => {
   const [data, setData] = useState([])
@@ -10,6 +11,9 @@ const Editrole = () => {
   const [value, setValue] = useState(data.role);
   const [error, setError] = useState(' ')
   
+  const navigate = useNavigate();
+  const info = JSON.parse(localStorage.getItem('token'));
+  if (localStorage.getItem("token")) {
     useEffect(()=>{
       fetch("http://localhost:3000/api/item", {
         method: "GET",
@@ -56,11 +60,12 @@ const Editrole = () => {
       };
 
 
-      const handleSubmit= () => {
+      const handleSubmit= (event) => {
         event.preventDefault();
-        console.log("hello")
+        console.log(event)
         const data = Object.fromEntries(new FormData(event.target));
-        console.log(data)
+        console.log(data);
+        const id = data.id;
     
     
         fetch(`http://localhost:3000/api/edit/${id}`, {
@@ -73,7 +78,7 @@ const Editrole = () => {
   
           .then((response) => {
               if (response.ok) {
-                navigate("/itemlist");
+                window.location.reload(false);
               } else {
                 setError("Invalid input");
               }
@@ -84,7 +89,9 @@ const Editrole = () => {
             });
             // window.location.reload(false);
       };
-
+    } else {
+      navigate('/')
+    }
 
     return (
     <div>
@@ -104,7 +111,7 @@ const Editrole = () => {
           <th scope='col'>Delete</th>
           </tr>
         </MDBTableHead>
-        <MDBTableBody>
+        <MDBTableBody>  
         {user.map((data) => (
             <tr key={data._id}>
               <td>{data._id}</td>
@@ -113,19 +120,20 @@ const Editrole = () => {
               <td>{data.role}</td>
               <td>     
               <Popup contentStyle={{width: "400px"}} trigger={<button> Edit </button>} >
-                <form method="post" >
+                <form method="post" onSubmit={handleSubmit}>
                   <fieldset>
-                  <MDBContainer className="my-5" onSubmit={handleSubmit}>                  
+                  <MDBContainer className="my-5" >                  
+                    <MDBInput wrapperClass='mb-4' label='id' size="lg" name='id' value={data._id} readonly/>
                     <MDBCard>
                     Select Role: 
                     <select className="form-select" aria-label="Default select example" value={value} onChange={handleChange}>
-                    <option></option>
+                    <option disabled selected>--Select Role--</option>
                       <option value="admin">admin</option>
                       <option value="user">user</option>
                     </select> 
                     <br />
                     <h6>Role Selected: </h6>
-                    <MDBInput wrapperClass='mb-4' label='id' size="lg" name='role' value={value} placeholder={data.role} readonly/>
+                    <MDBInput wrapperClass='mb-4' label='role' size="lg" name='role' value={value} placeholder={data.role} readonly/>
                     <MDBBtn className="mb-4 px-5" color='dark' size='lg'>Update</MDBBtn>
                     </MDBCard>
                     </MDBContainer>
