@@ -5,8 +5,6 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-
-
 const Cart = () => {
   const [ data, setData ] = useState([]);
 
@@ -54,7 +52,7 @@ data.forEach(function(obj) {
     counter[key] = (counter[key] || 0) + 1
 })
 
-console.log(Object.keys(counter))
+
 const title = (Object.keys(counter))
 
 console.log(Object.values(counter))
@@ -63,10 +61,9 @@ console.log(Object.values(counter))
     <div>
        <br /> 
        <br />
-       <br />
       <MDBBtn style={{float: 'left'}} href="/dashboard">Back to Dashboard</MDBBtn>
+       <br />
     <br />
-    <br /><a role="button" disabled href="/" aria-disabled="false" class="btn btn-secondary\\\ btn-lg disabled" style="width: 300px;">Item List</a>
     <CardGroup>   
     <Card style={{width:"auto"}} align="center">
     <Card.Body >
@@ -88,7 +85,7 @@ console.log(Object.values(counter))
     justifyContent: 'center'}}>
 {data.map((item, i)=> {
   return (
-<div>
+<div key={i}>
     <Card key={i} style={{width:"304px"}} align="center">
 
     <MDBIcon far icon="trash-alt" />
@@ -96,16 +93,14 @@ console.log(Object.values(counter))
         <Card.Title>{item.name}</Card.Title>
         <Card.Text align="left">
         Item Name : <br />
-
-          {item.itemId.name}<br /><br />
-
+        {item.itemId.name}<br /><br />
         Item Description :<br />
         {item.itemId.description}<br /><br />
         Item Price: <br/>
         $ {item.itemId.price}
-            </Card.Text>
-          </Card.Body>
-          <button onClick={handleDelete(item._id)}>Delete</button>
+          </Card.Text>
+        </Card.Body>
+        <button onClick={handleDelete(item._id)}>Delete</button>
         </Card>
         </div>
         )})}

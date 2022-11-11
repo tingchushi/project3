@@ -123,7 +123,6 @@ try {
   const user = await User.findOne({ username });
   if (user === null) {
     res.status(401).json({ msg: "No user" });
-    // console.log(user);
     return;
   }
 
@@ -175,6 +174,36 @@ app.put("/api/edit/:id", (req, res) => {
       return res.status(400).json({msg:"wrong input"})
     }
 });
+
+// Update Password
+app.put("/api/password/:id", async (req, res) => {
+  const { oPassword, nPassword } = req.body;
+  const { id } = req.params
+  const hashedString = bcrypt.hashSync(nPassword, bcrypt.genSaltSync(10));
+  const user = await User.findOne({id})
+
+  try {
+    if (await bcrypt.compare(oPassword, user.password)) {
+      User.findByIdAndUpdate(
+        req.params.id,
+        {password: hashedString},
+
+        (err, updatedPassword) => {
+          if (err) {
+            res.status(400).json({ error: err.msg });
+          }
+          res.status(200).json(updatedPassword);
+        })
+      return;
+    } else {
+      return res.status(400).json({ msg: "wrong password" })
+    }
+  }
+  catch {
+    res.status(500).json({ msg: "not working" })
+  }
+}
+)
 
 //delete user
 app.delete("/api/delete/:id", async (req, res) => {
@@ -284,6 +313,40 @@ app.get('/api/cart/all', async (req,res) => {
   const allCart = await Cart.find().populate('itemId').exec();
   res.status(200).json(allCart)
 })
+
+app.get('/api/cart/group/:id', async (req,res) => {
+  const id = req.params.id;
+  const findUser = Cart.find({userId:id});
+  console.log(findUser)
+  if (findUser){
+
+    Cart.aggregate([
+      {
+        "$group": { _id: { user_id: "$userId", item: "$itemId" }, 
+        count: { $sum: 1 }  
+      }  
+      },
+      { "$sort": { "finalTotal": -1 } },
+      { "$limit": 5 }
+    ]).exec(function(error, fetchAllTopUsers){
+      console.log('##################');
+      console.log(fetchAllTopUsers);
+      res.status(200).json(fetchAllTopUsers);
+    });
+  }
+  })
+
+  app.get('/api/cart/g', async (req,res) => {
+    // const id = req.params.id;
+  
+      Cart.aggregate([ { $match : { userId : "636d9c42657a39c8cb290868" } } ]).exec(function(error, fetchAllTopUsers){
+        console.log('##################');
+        console.log(fetchAllTopUsers);
+        res.status(200).json(fetchAllTopUsers);
+      });
+    });
+
+  
 
 app.get('/api/cart/all/:id', async (req,res) => {
   const id = req.params.id;

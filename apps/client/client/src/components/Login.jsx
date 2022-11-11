@@ -78,7 +78,7 @@ function LoginForm() {
          {/* <h5 className="fw-normal my-4 pb-3" style={{letterSpacing: '1px'}}>Sign into your account</h5> */}
 
            <MDBInput wrapperClass='mb-4' label='Username' id='formControlLg' type='text' size="lg" name='username' placeholder="Enter your username"/>
-           <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg" name="password"placeholder="Enter your password"/>
+           <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg" name="password" placeholder="Enter your password"/>
           <div style={{color:"red"}}>{error}</div>
          <MDBBtn className="mb-4 px-5" color='dark' size='lg' >Login</MDBBtn>
          <a className="small text-muted" href="#!">Forgot password?</a>

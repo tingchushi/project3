@@ -132,7 +132,6 @@ function Signup () {
           return <button type="button" disabled className="mb-4 px-5" color='dark' size='lg'>Register</button>
         }
       } else {
-        // return <MDBBtn type="button" disabled className="mb-4 px-5" color='dark' size='lg'>Register</MDBBtn>
         return <button disabled variant="dark">Sign Up</button> 
       };
     };
@@ -141,7 +140,6 @@ function Signup () {
       <form method="post" onSubmit={handleSubmit}>
         <fieldset>
           <br />
-          {/* <legend>Sign Up</legend> */}
           <MDBContainer fluid>
           <MDBCard className='text-black m-5' style={{borderRadius: '25px'}}>
           <MDBCardBody>

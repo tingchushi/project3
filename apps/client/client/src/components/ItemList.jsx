@@ -6,13 +6,18 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Toast from 'react-bootstrap/Toast';
+import Button from 'react-bootstrap/Button';
 
 function ItemList () {
   const [ data, setData ] = useState([]);
   const [ userRole, setUserRole ] = useState(' ');
+  const [show, setShow] = useState(false);
 
   const navigate = useNavigate();
-
   const info = JSON.parse(localStorage.getItem('token'));
   
     const tokens = info.token;
@@ -25,7 +30,7 @@ function ItemList () {
       fetch(`http://localhost:3000/api/all/${id}`, {
         method: "GET",
       })
-      .then((response) =>  response.json())
+      .then((response) => response.json())
       .then((data) => {
         setUserRole(data.role)
       });
@@ -64,7 +69,8 @@ function ItemList () {
     const handleAddCart = (id) => () => {
       event.preventDefault();
       console.log(id);
-      
+      console.log(event.target)
+      alert(event.target.value, "Added Successfully")
       fetch(`http://localhost:3000/api/cart/create`, {
         method: "POST",
         body: JSON.stringify({
@@ -82,43 +88,6 @@ function ItemList () {
         }
       })
       .then((data) => console.log(data))
-      
-    };
-    
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      
-      const data = Object.fromEntries(new FormData(event.target));
-      console.log(data)
-      
-      fetch("http://localhost:3000/api/signup", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Bad status code from server.');
-        } 
-        if (response.status !== 200){
-          setMsg('Username/Email Existed')
-          alert("Invalid Information")
-        }
-        console.log(response.status)
-        return response.json();
-      })
-      
-      .then((data) => {
-        if (data.msg) {
-          setMessage(data.msg);
-          
-        } else {
-          navigate("/");
-          alert("Welcome!!! You have sucessfully registered!")
-        }
-      });
     };
   
     return (
@@ -127,6 +96,24 @@ function ItemList () {
 <br />
 <div>
   <h1>Item List</h1>
+  <div
+      aria-live="polite"
+      aria-atomic="true"
+      style={{ minHeight: '20px' }}
+      align = "right"
+    >
+            <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">Add Item</strong>
+              </Toast.Header>
+              <Toast.Body>Added Successfully</Toast.Body>
+            </Toast>
+        </div>
 </div>
 <CardGroup style={{    
     alignItems: 'center',
@@ -134,7 +121,7 @@ function ItemList () {
     justifyContent: 'center'}}>
 {data.map((item, i)=> {
   return (
-<div>
+<div key={i}>
     <Card key={i} style={{width:"304px"}} align="center">
     {userRole === "admin" ? <i className="bi bi-trash3-fill" align="right" onClick={handleDelete(item._id)}></i> : null}
     <MDBIcon far icon="trash-alt" />
@@ -158,11 +145,14 @@ function ItemList () {
        Created { Math.floor((new Date().getTime() - new Date(item.createdAt).getTime()) / ( 60 * 60 * 24 * 1000) )} days ago<br />
         </small> 
     </Card.Footer>
-      <button onClick={handleAddCart(item._id, tokens)}>Add to Cart</button>
+      <button onClick={handleAddCart(item._id, tokens), () => setShow(true)}>Add to Cart</button>
+      <ToastContainer />
   </Card>
 </div>
   )})}
 </CardGroup>
+
+
     </>
   )
 }

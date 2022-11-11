@@ -9,6 +9,7 @@ import Dashboard from "./components/Dashboard"
 import Edititem from "./components/Edititem"
 import Overview from "./components/Overview"
 import Editrole from "./components/Editrole"
+import EditPassword from "./components/EditPassword"
 
 function App() {
   const info = JSON.parse(localStorage.getItem('token'));
@@ -25,6 +26,7 @@ function App() {
         {info !== null ? <Route path="/overview" element={<Overview />} /> : <Route index element={<Login />} /> }
         {info !== null ? <Route path="/itemlist" element={<Edititem />} /> : <Route index element={<Login />} /> }
         {info !== null ? <Route path="/cart" element={<Cart />} /> : <Route index element={<Login />} /> }
+        {info !== null ? <Route path="/editpassword" element={<EditPassword />} /> : <Route index element={<Login />} /> }
         <Route path="/*" element={<Login />} />
 
       </Route>

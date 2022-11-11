@@ -24,9 +24,7 @@ function Navbar1() {
             .then((response) =>  response.json())
             .then((data) => {
                 setUserRole(data?.role)
-                // this.setUserRole(data.role, callback);
                 console.log(userRole)
-                // window.location.reload(false);
             });   
         }
     },[])
@@ -47,6 +45,9 @@ function Navbar1() {
                 </li>
                 <li className="nav-item">
                 {userRole === "admin" || userRole === "user" ? <br /> : <a className="nav-link" aria-current="page" href="/signup">Registration</a> }
+                </li>
+                <li>
+                {userRole === "admin" || userRole === "user" ? <a className="nav-link" aria-current="page" href="/editpassword">Setting</a> : <br /> }
                 </li>
                 <li className="nav-item">
                     {userRole === ' ' ? <br/> :<a className="nav-link" href="/" onClick={handleLogout}>Logout</a>}

@@ -11,7 +11,6 @@ function Dashboard() {
  
  const navigate = useNavigate();
  const info = JSON.parse(localStorage.getItem('token'));
- 
 
    const id = info.token;
    useEffect(()=>{

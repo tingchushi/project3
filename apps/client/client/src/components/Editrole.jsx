@@ -13,7 +13,7 @@ const Editrole = () => {
   
   const navigate = useNavigate();
   const info = JSON.parse(localStorage.getItem('token'));
-  if (localStorage.getItem("token")) {
+
     useEffect(()=>{
       fetch("http://localhost:3000/api/item", {
         method: "GET",
@@ -89,9 +89,6 @@ const Editrole = () => {
             });
             // window.location.reload(false);
       };
-    } else {
-      navigate('/')
-    }
 
     return (
     <div>
