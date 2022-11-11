@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Profile from './Profile';
 
 const Cart = () => {
   const [ data, setData ] = useState([]);
@@ -43,7 +44,7 @@ const sum = data?.reduce((accumulator, object) => {
   return accumulator + object.itemId.price;
 }, 0);
 
-console.log(sum);
+// console.log(sum);
 
 let counter = []
 
@@ -53,14 +54,42 @@ data.forEach(function(obj) {
 })
 
 
-const title = (Object.keys(counter))
+// const title = (Object.keys(counter))
 
-console.log(Object.values(counter))
+// console.log(Object.keys(counter))
+// console.log(Object.values(counter))
+const value = Object.values(counter);
+
+let uId = [];
+let iId = []
+
+data?.forEach(function(value, index) {
+  uId[index] = value.userId;
+  iId[index] = value.itemId.name;
+})
+
+// console.log(uId);
+// console.log(iId);
+
+const counts = [];
+iId.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+// console.log(counts)
+
+let uniqueChars = [...new Set(iId)];
+
+// console.log(uniqueChars);
+
+const country = (value, uniqueChars) => value.map((x, i) => {
+  return (
+    <li className="list-group-item" key={i}>
+      {[x + "ea", " x " + uniqueChars[i]]}<br />
+    </li> 
+    
+)})
 
   return (
     <div>
-       <br /> 
-       <br />
+      <Profile />
       <MDBBtn style={{float: 'left'}} href="/dashboard">Back to Dashboard</MDBBtn>
        <br />
     <br />
@@ -69,13 +98,18 @@ console.log(Object.values(counter))
     <Card.Body >
         <Card.Title>Summary</Card.Title>
         <Card.Text align="left">
-       Total: ${sum.toLocaleString()}<br />
-       Total Item: 
+      <ul className="list-group">
+        Total Amount:
+       <li className="list-group-item"> ${sum.toLocaleString()}</li><hr />
+       </ul>
+       Total Item(s): 
+       <ul className="list-group">
+       {country(value,uniqueChars)}
+       </ul>
         </Card.Text>
       </Card.Body>
   </Card>
 </CardGroup>
-    
     <br />
     <br />
     <div>

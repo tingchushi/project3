@@ -4,6 +4,7 @@ import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardImag
 import Popup from 'reactjs-popup';
 import { Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import Profile from "./Profile";
 
 const Editrole = () => {
   const [data, setData] = useState([])
@@ -92,8 +93,7 @@ const Editrole = () => {
 
     return (
     <div>
-      <br />
-      <br />
+      <Profile />
       <MDBBtn style={{float: 'left'}} href="/dashboard">Back to Dashboard</MDBBtn>
       <br />
       <br />

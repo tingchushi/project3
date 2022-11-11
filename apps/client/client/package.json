@@ -28,6 +28,7 @@
     "install": "^0.13.0",
     "mdb-react-ui-kit": "^4.2.0",
     "mdbreact": "^5.2.0",
+    "plotly.js": "^2.16.1",
     "react": "^18.2.0",
     "react-big-calendar": "^1.5.0",
     "react-bootstrap": "^2.5.0",
@@ -36,6 +37,7 @@
     "react-calendar": "^3.9.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0",
+    "react-plotly.js": "^2.6.0",
     "react-router-dom": "^6.4.2",
     "react-toastify": "^9.1.1",
     "reactjs-popup": "^2.0.5"

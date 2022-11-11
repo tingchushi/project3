@@ -44,7 +44,7 @@ function Profile() {
       })
       .then((response) =>  response.json())
       .then((data) => {
-        console.log(data.role);
+        // console.log(data.role);
         setUsername(data.username)
         setEmail(data.email)
         setRole(data.role)

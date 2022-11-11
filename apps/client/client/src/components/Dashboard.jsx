@@ -20,7 +20,7 @@ function Dashboard() {
       .then((response) =>  response.json())
       .then((data) => {
         setUserRole(data.role)
-        console.log(userRole)
+        // console.log(userRole)
         
       });
     },[])

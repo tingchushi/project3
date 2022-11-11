@@ -17,7 +17,7 @@ from 'mdb-react-ui-kit';
 import { useNavigate } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-
+import Profile from "./Profile";
 
 
 function Edititem (){
@@ -85,8 +85,7 @@ function Edititem (){
 
     return (
     <>
-    <br />
-    <br />
+    <Profile />
     <MDBBtn style={{float: 'left'}} href="/dashboard">Back to Dashboard</MDBBtn>
     <br />
     <br />
