@@ -131,7 +131,7 @@ function EditPassword() {
 
             .then((data) => {
                 if (data.msg) {
-                    setMessage(data.msg);
+                    setMsg(data.msg);
                 } else {
                     navigate("/");
                     alert("You have sucessfully changed password!")

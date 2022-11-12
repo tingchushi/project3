@@ -154,7 +154,7 @@ try {
 }
 });
 
-//update for admin and supervisor
+//update for admin and user
 app.put("/api/edit/:id", (req, res) => {
   const { role } = req.body;
   if (req.body.role === "admin" || req.body.role === "user"){
@@ -176,29 +176,32 @@ app.put("/api/edit/:id", (req, res) => {
 });
 
 // Update Password
-// Update Password
 app.put("/api/password/:id", async (req, res) => {
   const { oPassword, nPassword } = req.body;
   const { id } = req.params
   const hashedString = bcrypt.hashSync(nPassword, bcrypt.genSaltSync(10));
+  const hashedString1 = bcrypt.hashSync(oPassword, bcrypt.genSaltSync(10));
   const user = await User.findOne({id})
-
+  console.log(user)
+  console.log(nPassword)
+  console.log(oPassword)
+  console.log(hashedString1)
+  console.log(nPassword, user.password)
+  console.log(await bcrypt.compare(hashedString1, user.password))
+  console.log(await bcrypt.compare(oPassword, user.password))
+  
   try {
-    if (await bcrypt.compareSync(oPassword, user.password)) {
       User.findByIdAndUpdate(
         req.params.id,
         {password: hashedString},
 
         (err, updatedPassword) => {
           if (err) {
-            res.status(400).json({ error: err.message });
+            res.status(400).json({ error: err.msg });
           }
           res.status(200).json(updatedPassword);
         })
       return;
-    } else {
-      return res.status(400).json({ msg: "wrong password" })
-    }
   }
   catch {
     res.status(500).json({ msg: "not working" })

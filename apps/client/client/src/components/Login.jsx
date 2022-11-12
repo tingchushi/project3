@@ -81,12 +81,12 @@ function LoginForm() {
            <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg" name="password" placeholder="Enter your password"/>
           <div style={{color:"red"}}>{error}</div>
          <MDBBtn className="mb-4 px-5" color='dark' size='lg' >Login</MDBBtn>
-         <a className="small text-muted" href="#!">Forgot password?</a>
+         {/* <a className="small text-muted" href="#!">Forgot password?</a> */}
          <p className="mb-5 pb-lg-2" style={{color: '#393f81'}}>Don't have an account? <a href="/signup" style={{color: '#393f81'}}>Register Here</a></p>
 
          <div className='d-flex flex-row justify-content-start'>
-           <a href="#!" className="small text-muted me-1">Terms of use.</a>
-           <a href="#!" className="small text-muted">Privacy policy</a>
+           {/* <a href="#!" className="small text-muted me-1">Terms of use.</a>
+           <a href="#!" className="small text-muted">Privacy policy</a> */}
          </div>
 
               </MDBCardBody>
