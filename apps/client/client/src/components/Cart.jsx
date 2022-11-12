@@ -40,9 +40,10 @@ const handleDelete = (id) => () => {
     .then((data) => console.log(data));
 };
 
-const sum = data?.reduce((accumulator, object) => {
-  return accumulator + object.itemId.price;
-}, 0);
+  const sum = data?.reduce((accumulator, object) => {
+    return accumulator + object.itemId.price;
+  }, 0);
+
 
 // console.log(sum);
 
@@ -64,8 +65,8 @@ let uId = [];
 let iId = []
 
 data?.forEach(function(value, index) {
-  uId[index] = value.userId;
-  iId[index] = value.itemId.name;
+  uId[index] = value?.userId;
+  iId[index] = value?.itemId?.name;
 })
 
 // console.log(uId);

@@ -105,9 +105,11 @@ function Signup () {
           if (!response.ok) {
             throw new Error('Bad status code from server.');
           } 
-          if (response.status !== 200){
+          if (response.status !== 200 ){
+            if (response.status !==204){
+              alert("Invalid Information")
+            } 
             setMsg('Username/Email Existed')
-            alert("Invalid Information")
           }
           console.log(response.status)
           return response.json();
@@ -115,7 +117,7 @@ function Signup () {
       
         .then((data) => {
           if (data.msg) {
-            setMessage(data.msg);
+            setMsg(data.msg);
             
           } else {
             navigate("/");

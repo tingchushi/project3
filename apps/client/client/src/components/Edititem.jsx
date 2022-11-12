@@ -99,7 +99,7 @@ function Edititem (){
           <th scope='col'>Price</th>
           <th scope='col'>Creation Date</th>
           <th scope='col'>Updata Item</th>
-          <th scope='col'>Remove</th>
+          {/* <th scope='col'>Remove</th> */}
           </tr>
         </MDBTableHead>
     
@@ -129,7 +129,7 @@ function Edititem (){
                   </form>
                   </Popup>
                 </div></td>
-              <td><button onClick={handleDelete(data._id)}>Delete</button></td>
+              {/* <td><button onClick={handleDelete(data._id)}>Delete</button></td> */}
             </tr>
           ))}
         </MDBTableBody>

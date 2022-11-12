@@ -103,7 +103,7 @@ function ItemList () {
         return (
 <div key={i}>
     <Card key={i} style={{width:"304px"}} align="center">
-    {userRole === "admin" ? <i className="bi bi-trash3-fill" align="right" onClick={handleDelete(item._id)}></i> : null}
+    {/* {userRole === "admin" ? <i className="bi bi-trash3-fill" align="right" onClick={handleDelete(item._id)}></i> : null} */}
     <MDBIcon far icon="trash-alt" />
     <Card.Body >
       <Card.Title>{item.name}</Card.Title>
